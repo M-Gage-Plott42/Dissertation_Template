@@ -1,0 +1,740 @@
+% This template is based on the eighth edition of the Graduate Manuscript Standards found here: https://www.utc.edu/sites/default/files/2024-11/graduate-manuscript-standards-nov-2024.pdf. Be sure to check with UTC for updates during the semester in which you intend to graduate. This template is intended to be a solid starting point, but be sure to check margins and formatting guidelines as you add content.
+
+\documentclass[12pt]{report} % 12pt font, report class for theses
+
+%------------------------------------------------------------------------------%
+% 0) Engine + font                                                             %
+%------------------------------------------------------------------------------%
+% UTC requires Times New Roman or Calibri (11 or 12 pt) to be used consistently
+% throughout the document. The most reliable way to do that in LaTeX is to
+% compile with XeLaTeX (recommended) or LuaLaTeX so we can select system fonts.
+\usepackage{iftex}
+\ifPDFTeX
+  \PackageError{utc-thesis-template}{This template must be compiled with XeLaTeX or LuaLaTeX.}{%
+    Switch your compiler to XeLaTeX (recommended) or LuaLaTeX.%
+  }
+\else
+  \usepackage{fontspec}
+  \defaultfontfeatures{Ligatures=TeX}
+  % Pick ONE of the approved fonts:
+  % \setmainfont{Calibri}
+  \setmainfont{Times New Roman}
+\fi
+
+
+%------------------------------------------------------------------------------%
+% Submission mode toggle                                                       %
+%------------------------------------------------------------------------------%
+% In FINAL mode, the PDF must NOT contain active hyperlinks (per UTC Graduate
+% Manuscript Standards). In DRAFT mode, hyperlinks are convenient for navigation.
+\newif\ifUTCFinal
+\UTCFinalfalse % default to DRAFT; flip to \UTCFinaltrue only when exporting final submission PDF
+
+%------------------------------------------------------------------------------%
+% 1) Standard packages (add or remove as needed)                               %
+%------------------------------------------------------------------------------%
+\usepackage{etoolbox}      % needed early: we patch report.cls chapter* head BEFORE titlesec loads
+
+\usepackage{titlesec}      % custom title formatting
+% Hyperlinks (draft vs final)
+\ifUTCFinal
+  \usepackage[draft]{hyperref} % disables link annotations in the PDF
+\else
+  \usepackage{hyperref}
+\fi
+% Better line-breaking for long URLs/DOIs (helps prevent Overfull \hbox)
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{}
+\usepackage{amsmath,amssymb,amsfonts} % math packages
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{setspace}      % line spacing
+\usepackage{ragged2e}
+% Caption formatting (loaded once; must come before subcaption)
+% - Left-justified captions: justification=raggedright
+% - Centered captions:      justification=centering
+\usepackage[justification=raggedright,singlelinecheck=false]{caption}
+% UTC Item 19: multi-line captions must be single-spaced; hanging indent allowed.
+\captionsetup{font={singlespacing},format=hang}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage{tocloft}       % customize ToC, LoF, LoT
+\usepackage{enumitem}      % custom lists
+\usepackage{xpatch}
+\usepackage{indentfirst}   % indents paragraphs immediately following a chapter or section heading
+\usepackage[backend=biber,hyperref=false]{biblatex}
+\addbibresource{citations.bib}
+
+% --- UTC Item 13: DOI/URL policy ---------------------------------------------
+% UTC Graduate Manuscript Standards (Nov 2024):
+% - Do not embed *active* URL links in the FINAL submitted PDF.
+% - Include a DOI for internet sources when available; otherwise include the URL as plain text.
+% Implementation:
+% - Enable DOI/URL printing
+% - Prefer DOI over URL when both exist
+% - Keep FINAL PDFs non-clickable via the \ifUTCFinal hyperref+\url/\href guards below
+\ExecuteBibliographyOptions{doi=true,url=true,isbn=false,eprint=false}
+% UTC: show DOI/URL as plain text (no active URL hyperlinks)
+\DeclareFieldFormat{doi}{doi:\nolinkurl{#1}}
+\DeclareFieldFormat{url}{\nolinkurl{#1}}
+
+% --- UTC Item 12: REFERENCES formatting ---------------------------------------
+% Goal:
+% - REFERENCES heading formatted as a major heading (handled elsewhere)
+% - Entries single-spaced internally
+% - "Double-space between entries" = make the gap between items equal the document's
+%   double-spaced baseline (UTC sample behavior)
+% - No debug/typeout noise in the log
+\AtBeginBibliography{%
+  \singlespacing
+
+  % Remove extra "list padding" above the first entry (prevents huge gap after heading)
+  \setlength{\bibinitsep}{0pt}%
+  \setlength{\topsep}{0pt}%
+  \setlength{\partopsep}{0pt}%
+  \setlength{\parsep}{0pt}%
+  \setlength{\parskip}{0pt}%
+
+  % Between-entry spacing:
+  % Make baseline-to-baseline separation between items equal to the document's
+  % double-spaced baseline. Since entries are single-spaced, add only the difference.
+  \setlength{\bibitemsep}{\dimexpr\UTCdblskip-\baselineskip\relax}%
+  \setlength{\itemsep}{\bibitemsep}%
+
+  % No extra paragraph spacing inside items
+  \setlength{\bibparsep}{0pt}%
+}
+% ------------------------------------------------------------------------------
+
+%------------------------------------------------------------------------------%
+% 2) Page geometry: 1in all around by default                                  %
+%------------------------------------------------------------------------------%
+\usepackage[
+  letterpaper,
+  left=1in,
+  right=1in,
+  top=1in,
+  bottom=1in,
+  includefoot
+]{geometry}
+
+%------------------------------------------------------------------------------%
+% 3) Chapter formatting                                                        %
+%------------------------------------------------------------------------------%
+% UTC preliminary pages require:
+%  - ~2 inches of white space from the top of the page to the title line
+%  - two blank lines (single-spaced) between the title and the first text line
+% (e.g., ACKNOWLEDGEMENTS / TOC / LIST OF TABLES / LIST OF FIGURES).
+% See Graduate Manuscript Standards examples.
+% UTC: After preliminary/list titles, leave exactly two *single-spaced* blank lines
+% before the first line of text/entry (per Graduate Manuscript Standards).
+% We enforce true single-spacing for the blank lines even when the document is double-spaced.
+\newcommand{\UTCPrelimAfterTitle}{%
+  \par\nobreak
+  \begingroup\setstretch{1}\selectfont
+    \vspace{\baselineskip}% add the remaining blank-line spacing in true single-spacing
+  \endgroup
+}
+
+% Title format: NUMBERED chapters
+\titleformat{\chapter}[display]
+  {\normalfont\normalsize\centering}
+  {\MakeUppercase{\chaptername}\ \thechapter}
+  {6pt}
+  {\MakeUppercase}
+
+% Title format: UNNUMBERED chapters (Abstract, Dedication, etc.)
+\titleformat{name=\chapter,numberless}[display]
+  {\normalfont\normalsize\centering}
+  {}{6pt}{\MakeUppercase}[\UTCPrelimAfterTitle]
+
+% AUTOMATIC SPACING: push every chapter title down by 1in.  Since the text block
+% already begins 1in below the page top, your chapter heading sits at 2in on
+% the *first* page.  Subsequent pages in the chapter simply use the ordinary
+% 1in margin (no extra space is re‐inserted).
+\titlespacing*{\chapter}{0pt}{0.75in}{0.3in}
+% Push unnumbered chapter titles down so the title line sits ~2in from page top:
+\titlespacing*{name=\chapter,numberless}{0pt}{0.35in}{0pt}
+\setlength{\headheight}{0.2in} 
+\setlength{\headsep}{0.2in} 
+
+%------------------------------------------------------------------------------%
+% 4) Section‐level title formats                                               %
+%------------------------------------------------------------------------------%
+% UTC Item 16 (Subheadings):
+% - Subheadings must be single-spaced even if they wrap.
+% - Each heading level should have a distinct (but font/size-consistent) style.
+%   UTC allows bold/italics/underline and alignment changes, but not font/size changes
+%   or ALL CAPS headings.
+\titleformat{\section}[hang]
+  {\normalfont\normalsize\singlespacing}
+  {\thesection}{1.75em}{}
+\titleformat{\subsection}[hang]
+  {\normalfont\normalsize\itshape\singlespacing}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}[hang]
+  {\normalfont\normalsize\bfseries\itshape\singlespacing}
+  {\thesubsubsection}{1em}{}
+
+%------------------------------------------------------------------------------%
+% 5) Lists                                                                     %
+%------------------------------------------------------------------------------%
+% List spacing configuration lives in section 8 after \UTCdblskip is defined.
+
+%------------------------------------------------------------------------------%
+% 6) Hyperref setup (not strictly necessary)                                   %
+%------------------------------------------------------------------------------%
+\hypersetup{
+  colorlinks=false,
+  pdfborder={0 0 0},
+  hidelinks,
+  pdftitle={},
+  pdfauthor={},
+}
+
+\urlstyle{same} % keep URL font consistent with the main document font
+
+\ifUTCFinal
+  % Extra safety: even if a \url or \href sneaks in, force plain-text (no active links)
+  \hypersetup{draft}
+  \renewcommand{\url}[1]{\nolinkurl{#1}}
+  \renewcommand{\href}[2]{#2}
+\fi
+
+
+% Item 13: prefer DOI over URL (and keep eprint suppressed)
+\AtEveryBibitem{%
+  \clearfield{eprint}%
+  \iffieldundef{doi}{}{%
+    \clearfield{url}%
+    \clearfield{urldate}%
+  }%
+}
+%------------------------------------------------------------------------------%
+% 7) Table‐of‐contents, figures, tables styling                                %
+%------------------------------------------------------------------------------%
+\setcounter{tocdepth}{2}             % include up to subsections
+
+% UTC Item 9: TOC/LoF/LoT dot leaders (tighter spacing like the UTC sample pages)
+\renewcommand{\cftdotsep}{1}
+
+% UTC Item 9: TOC indentation
+% - Chapter titles start 0.5" in from the left margin after the chapter number column
+% - Sections align under chapter titles; subsections align under section titles
+\setlength{\cftchapnumwidth}{0.5in}
+\setlength{\cftsecindent}{0.5in}
+\setlength{\cftsubsecindent}{\dimexpr\cftsecindent+\cftsecnumwidth\relax}
+
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftaftertoctitleskip}{0.5in}
+\setlength{\cftparskip}{0pt}
+\setlength{\cftbeforechapskip}{12pt}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftbeforetabskip}{12pt}
+\setlength{\cftbeforefigskip}{0pt}
+\setlength{\cftfigindent}{0pt}   % no indent on figure entries
+\setlength{\cfttabindent}{0pt}   % no indent on table entries
+\setlength{\footskip}{36pt} % instead of the default ~30pt
+
+\newtoggle{FirstFigureEntry}
+
+\makeatletter
+  % Before each figure line:
+  \pretocmd{\l@figure}{%
+    \iftoggle{FirstFigureEntry}{%
+      % first entry
+      \vskip-2pt\togglefalse{FirstFigureEntry}%
+    }{%
+      % all subsequent entries
+      \unskip\vskip0pt%
+    }%
+    \begingroup\singlespacing%  % single‐space the entry itself
+  }{}{}
+  % After each figure line:
+  \apptocmd{\l@figure}{\endgroup}{}{}
+\makeatother
+
+% UTC Item 19: single-space list of tables entries (wraps cleanly).
+\makeatletter
+  \pretocmd{\l@table}{\begingroup\singlespacing}{}{}
+  \apptocmd{\l@table}{\endgroup}{}{}
+\makeatother
+
+% (Caption package loaded above; do not load it again here.)
+% patch \l@chapter to also insert 12pt *after* each chapter entry only if followed by section or subsection ––
+\makeatletter
+  % 1) Define an initially empty “after‐chapter” macro
+  \newcommand\TOC@AfterChapter{}
+
+  % 2) At the *start* of every \l@chapter, clear that marker
+  \pretocmd{\l@chapter}{\def\TOC@AfterChapter{}}{}{}
+
+  % 3) At the *end* of every \l@chapter, set the marker to \vskip12pt
+  \apptocmd{\l@chapter}{\def\TOC@AfterChapter{\vskip12pt}}{}{}
+
+  % 4) Just before printing a \section or \subsection entry,
+  %    execute the marker (if any) and then clear it again:
+  \pretocmd{\l@section}{\TOC@AfterChapter \def\TOC@AfterChapter{}}{}{}
+  \pretocmd{\l@subsection}{\TOC@AfterChapter \def\TOC@AfterChapter{}}{}{}
+\makeatother
+
+% UTC Item 9: continuation indent (0.5") for wrapped TOC/LoF/LoT entries
+% (UTC sample pages show that if a heading/title wraps to a second line, the
+% continuation line is indented by 0.5".)
+\makeatletter
+  \newcommand{\UTCtoc@contindent}{\hangindent=0.5in\hangafter=1\relax}
+
+  \patchcmd{\l@chapter}{\interlinepenalty\@M}{\interlinepenalty\@M\UTCtoc@contindent}{}{\PackageWarning{UTC}{Failed to patch \string\l@chapter for Item 9 continuation indent}}
+  \patchcmd{\l@section}{\interlinepenalty\@M}{\interlinepenalty\@M\UTCtoc@contindent}{}{\PackageWarning{UTC}{Failed to patch \string\l@section for Item 9 continuation indent}}
+  \patchcmd{\l@subsection}{\interlinepenalty\@M}{\interlinepenalty\@M\UTCtoc@contindent}{}{\PackageWarning{UTC}{Failed to patch \string\l@subsection for Item 9 continuation indent}}
+  \patchcmd{\l@subsubsection}{\interlinepenalty\@M}{\interlinepenalty\@M\UTCtoc@contindent}{}{\PackageWarning{UTC}{Failed to patch \string\l@subsubsection for Item 9 continuation indent}}
+
+  \patchcmd{\l@figure}{\interlinepenalty\@M}{\interlinepenalty\@M\UTCtoc@contindent}{}{\PackageWarning{UTC}{Failed to patch \string\l@figure for Item 9 continuation indent}}
+  \patchcmd{\l@table}{\interlinepenalty\@M}{\interlinepenalty\@M\UTCtoc@contindent}{}{\PackageWarning{UTC}{Failed to patch \string\l@table for Item 9 continuation indent}}
+\makeatother
+
+\renewcommand{\cfttoctitlefont}{\normalfont\normalsize\centering}
+\renewcommand{\cftaftertoctitle}{}
+\renewcommand{\cftloftitlefont}{\normalfont\normalsize\centering}
+\renewcommand{\cftafterloftitle}{}
+\renewcommand{\cftlottitlefont}{\normalfont\normalsize\centering}
+\renewcommand{\cftafterlottitle}{}
+
+\renewcommand{\cftchapfont}{\normalfont}
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsubsecfont}{\normalfont}
+
+
+\renewcommand{\cftchappagefont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+
+\renewcommand{\contentsname}{}
+\renewcommand{\listfigurename}{}
+\renewcommand{\listtablename}{}
+
+% Convenience wrapper: print TOC/LOF/LOT content without generating any extra (blank)
+% title pages. We control the visible titles with \chapter* above.
+\makeatletter
+\newcommand{\UTCstarttoc}[1]{\@starttoc{#1}}
+\makeatother
+
+%------------------------------------------------------------------------------%
+% 7b) UTC Item 11: Appendix divider pages                                      %
+%------------------------------------------------------------------------------%
+% UTC Graduate Manuscript Standards (Nov 2024) require:
+% - Each appendix is preceded by a divider sheet identifying the appendix letter and title.
+% - The TOC lists the *divider page* number for each appendix.
+% - Divider page text is centered vertically and horizontally.
+% - Two single-spaced blank lines between "APPENDIX X" and the title.
+% - If the title exceeds one line, double-space the title and format as an inverted pyramid.
+%
+% Usage:
+%   \UTCAppendixDivider{A}{TOC TITLE IN ALL CAPS}{DIVIDER TITLE IN ALL CAPS}
+% For long divider titles, insert manual line breaks in the DIVIDER title argument (#3)
+% to create the "inverted pyramid" shape, but keep the TOC title (#2) as a single line.
+\newcommand{\UTCAppendixDivider}[3]{%
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1.\ #2}%
+  \thispagestyle{plain}%
+  \vspace*{\fill}%
+  \begin{center}%
+    \begingroup
+      \singlespacing
+      APPENDIX #1\par
+      % two single-spaced blank lines
+      \vspace{2\baselineskip}%
+      % title lines are double-spaced if they wrap / are manually broken
+      \begin{doublespace}
+        #3\par
+      \end{doublespace}
+    \endgroup
+  \end{center}%
+  \vspace*{\fill}%
+}
+
+%------------------------------------------------------------------------------%
+% 8) Other Spacing Commands Mainly                                             %
+%------------------------------------------------------------------------------%
+\doublespacing
+% Capture the *double-spaced* baseline once, so we can reuse it even inside
+% environments that switch to single spacing (headings, lists, captions, etc.).
+\newlength{\UTCdblskip}
+\setlength{\UTCdblskip}{\baselineskip}
+\setlength{\parindent}{0.5in}
+
+%------------------------------------------------------------------------------%
+% UTC Item 19: Captions and float spacing                                       %
+%------------------------------------------------------------------------------%
+% - Captions/titles are single-spaced (even in a double-spaced document).
+% - Hanging indent is acceptable for left-aligned captions/titles.
+% - Leave one additional double-space before/after floats relative to text.
+% - Leave ~0.5in between consecutive floats (caption-to-next-float).
+% - Leave a single-spaced blank line between a figure/table and its caption/title.
+\newlength{\UTCsingleskip}
+\begingroup\singlespacing\global\setlength{\UTCsingleskip}{\baselineskip}\endgroup
+
+% Float spacing relative to text
+\setlength{\intextsep}{\UTCdblskip}
+\setlength{\textfloatsep}{\UTCdblskip}
+% Between floats (caption-to-next-float, when LaTeX stacks floats)
+\setlength{\floatsep}{0.5in}
+% Two-column variants (kept for consistency)
+\setlength{\dbltextfloatsep}{\textfloatsep}
+\setlength{\dblfloatsep}{\floatsep}
+
+%------------------------------------------------------------------------------%
+% UTC Item 20b: Robust wrappers to reduce formatting drift                      %
+%------------------------------------------------------------------------------%
+% Preferred pattern for new floats:
+% - Figures: content first, then \caption (caption below figure)
+% - Tables:  \caption first, then content (title above table)
+% These wrappers enforce that ordering so future edits don't accidentally break
+% UTC Item 19. They do NOT change output unless you choose to use them.
+%
+% Caption text policy reminder (UTC standards):
+% - No period/colon after the number before the title (template already enforces "space")
+% - Do not end titles with a period
+%
+% Usage:
+%   \UTCFigure[htbp]{Long caption}{fig:label}{<figure contents>}
+%   \UTCTable[htbp]{Long title}{tab:label}{<tabular/adjustbox contents>}
+%
+% Optional short entries for LOF/LOT:
+%   \UTCFigureS[htbp]{Short LOF}{Long caption}{fig:label}{<contents>}
+%   \UTCTableS[htbp]{Short LOT}{Long title}{tab:label}{<contents>}
+\newcommand{\UTCFigure}[4][]{%
+  \begin{figure}[#1]
+    \centering
+    #4%
+    \caption{#2}\label{#3}%
+  \end{figure}%
+}
+\newcommand{\UTCTable}[4][]{%
+  \begin{table}[#1]
+    \caption{#2}\label{#3}%
+    \centering
+    #4%
+  \end{table}%
+}
+\newcommand{\UTCFigureS}[5][]{%
+  \begin{figure}[#1]
+    \centering
+    #5%
+    \caption[#2]{#3}\label{#4}%
+  \end{figure}%
+}
+\newcommand{\UTCTableS}[5][]{%
+  \begin{table}[#1]
+    \caption[#2]{#3}\label{#4}%
+    \centering
+    #5%
+  \end{table}%
+}
+
+%------------------------------------------------------------------------------%
+% UTC Item 17: Widow/orphan control                                             %
+%------------------------------------------------------------------------------%
+% Aim: avoid single lines of a paragraph stranded at the bottom (club) or top
+% (widow) of a page. This is a structural baseline; remaining edge cases can be
+% fixed locally during the final pass (e.g., by rephrasing, adjusting floats).
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+
+%------------------------------------------------------------------------------%
+% UTC Item 18: Landscape pages (page number bottom-center on long edge)         %
+%------------------------------------------------------------------------------%
+% Use pdflscape's 'landscape' environment for wide tables/figures.
+% pdflscape rotates the PDF page itself (not just the content), which keeps the
+% footer (page number) on the long edge when viewed/printed.
+% Ensure the first landscape page uses the plain page style (bottom-center number).
+\AtBeginEnvironment{landscape}{\thispagestyle{plain}}
+
+% UTC: lists are single-spaced; leave a double-spaced blank line before and after.
+\AtBeginEnvironment{itemize}{\singlespacing}
+\AtBeginEnvironment{enumerate}{\singlespacing}
+\AtBeginEnvironment{description}{\singlespacing}
+
+\setlist[itemize]{%
+  font=\normalfont,
+  leftmargin=\dimexpr\leftmargini + 0.1in\relax,
+  itemsep=0pt,
+  parsep=0pt,
+  topsep=\UTCdblskip,
+  partopsep=0pt
+}
+
+\setlist[enumerate]{%
+  font=\normalfont,
+  label=\arabic*., % keep enumerate style
+  leftmargin=\dimexpr\leftmargini + 0.1in\relax,
+  itemsep=0pt,
+  parsep=0pt,
+  topsep=\UTCdblskip,
+  partopsep=0pt
+}
+
+% UTC Item 16 (Subheading spacing):
+% - Insert ONE additional double-space (one blank line) before a heading when it follows text.
+% - When headings stack (e.g., \section immediately followed by \subsection),
+%   keep only ONE double-space between headings (so "after" is 0pt).
+\titlespacing*{\section}{0pt}{\UTCdblskip}{0pt}
+\titlespacing*{\subsection}{0pt}{\UTCdblskip}{0pt}
+\titlespacing*{\subsubsection}{0pt}{\UTCdblskip}{0pt}
+
+% UTC: footnotes must be single-spaced (even though body is double-spaced).
+\makeatletter
+\patchcmd{\@footnotetext}{\footnotesize}{\footnotesize\singlespacing}{}{}
+\patchcmd{\@mpfootnotetext}{\footnotesize}{\footnotesize\singlespacing}{}{}
+\makeatother
+
+% UTC: block quotations (3+ lines) should be single-spaced.
+\AtBeginEnvironment{quote}{\singlespacing}
+\AtBeginEnvironment{quotation}{\singlespacing}
+
+
+
+
+%------------------------------------------------------------------------------%
+% 9) Document metadata                                                         %
+%------------------------------------------------------------------------------%
+% Use ONE set of metadata so approval/title/copyright pages stay consistent.
+% UTC requires the author's full name (no initials) and consistent usage across pages.
+\newcommand{\ManuscriptTitle}{TITLE OF THESIS OR DISSERTATION IN ALL CAPS}
+% PUBLIC TEMPLATE NOTE: keep placeholders in the shared template.
+% When producing a real submission PDF, replace with actual values:
+% - Author must be FULL NAME (no initials), used consistently.
+% - Grad date is Month Year (no comma); award months are May/August/December.
+\newcommand{\AuthorFullName}{FIRST MIDDLE LAST} % full name, no initials
+\newcommand{\DegreeName}{DEGREE NAME} % e.g., Doctor of Philosophy in [FIELD]
+\newcommand{\GradMonthYear}{Month Year} % May/August/December 20XX (no comma)
+\newcommand{\CopyrightYear}{20XX}
+\title{\ManuscriptTitle}
+\author{\AuthorFullName}
+\date{\GradMonthYear}
+
+%------------------------------------------------------------------------------%
+% 10) Begin document                                                           %
+%------------------------------------------------------------------------------%
+
+% Sometimes you will need to use \vspace*{} to adjust your margins as your document becomes more complicated. Be sure to measure the margins (1" all around except 2" top margins on chapter pages) using PDF software as you go along. Also, typically, you will need 0.5" between figures/tables, measured from the bottom of the caption to the top of the next figure/table.
+
+% UTC Item 19: caption punctuation + spacing
+% - No punctuation between number and title: use a space (no colon / period).
+% - Single-spaced blank line between object and caption/title.
+% - Table titles appear above tables; figure titles below figures.
+% Enforce UTC "single-spaced blank line" between object and caption/title:
+% - Figures: blank line between figure and caption (caption below) -> aboveskip
+% - Tables:  blank line between caption and table (caption above) -> belowskip
+\captionsetup[figure]{labelsep=space,position=bottom,skip=\UTCsingleskip}
+\captionsetup[table]{labelsep=space,position=top,skip=\UTCsingleskip}
+
+% Any text enclosed in [] should be replaced with information relevant to your thesis/dissertation. Do not leave the braces in your final document!
+
+\begin{document}
+
+% ------------------------------------------------------------------
+% PRELIMINARY PAGES (lowercase Roman)
+% Committee page is "i" but the number must NOT appear.
+% Title page is "ii" and the page number DOES appear.
+% ------------------------------------------------------------------
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% -------------------- Committee & University Representative Page (i; no printed number)
+\newgeometry{top=2in,left=1in,right=1in,bottom=1in,includefoot,footskip=30pt}
+\thispagestyle{empty}
+\begin{center}
+% Approved line removed; title now sits at the 2in top margin set above.
+\ManuscriptTitle\par
+\vspace{0.5in}
+By\par
+\AuthorFullName\par
+\vspace{0.75in}
+\end{center}
+
+\begin{singlespace}
+\noindent
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ll@{}}
+% Do not include degree designations like Ph.D., etc.
+First M. Last & First M. Last \\
+Professor of [DEPARTMENT] & Professor of [DEPARTMENT] \\
+(Chair) \vspace{1cm} & (Committee Member) \\
+First M. Last & First M. Last \\
+Associate Professor of [DEPARTMENT] & Assistant Professor of [DEPARTMENT] \\
+(Committee Member) & (Committee Member) \\
+\end{tabular*}
+\end{singlespace}
+\clearpage
+
+% -------------------- Title Page (ii; page number printed)
+\thispagestyle{plain}
+\begin{center}
+\ManuscriptTitle\par
+\vspace{0.75in}
+By\par
+\AuthorFullName\par
+\vspace{0.75in}
+\begin{singlespace}
+A Dissertation Submitted to the Faculty of the University of\\
+Tennessee at Chattanooga in Partial\\
+Fulfillment of the Requirements of the Degree\\
+of \DegreeName\\[0.5in]
+The University of Tennessee at Chattanooga\\
+Chattanooga, Tennessee\\[0.25in]
+\GradMonthYear
+\end{singlespace}
+\end{center}
+\restoregeometry
+\clearpage
+
+% Delete the 7 lines below up to the ABSTRACT if you do not want a copyright page.
+\vspace*{\fill}
+\begin{center}
+    Copyright \copyright\ \CopyrightYear \\
+    By \AuthorFullName \\
+    All Rights Reserved
+\end{center}
+\vspace*{\fill}
+\clearpage
+
+\chapter*{ABSTRACT}
+\cftaddtitleline{toc}{chapter}{ABSTRACT}{\thepage}
+This is a placeholder abstract. Summarize the research problem, methodology, and key findings here. This should have a maximum word count of 150 words for a Master's degree, and 350 words for a PhD.
+
+\chapter*{DEDICATION} % Optional page
+\cftaddtitleline{toc}{chapter}{DEDICATION}{\thepage}
+This dissertation is dedicated to [Name], whose support was invaluable throughout this journey. This page is optional.
+
+\chapter*{ACKNOWLEDGEMENTS} % Optional page
+\cftaddtitleline{toc}{chapter}{ACKNOWLEDGEMENTS}{\thepage}
+The author would like to thank [Advisor Name], committee members, and colleagues for their guidance and encouragement. This page is optional.
+
+\clearpage
+
+% --------------------  TABLE OF CONTENTS  --------------------
+\chapter*{TABLE OF CONTENTS}% centered, unnumbered
+{\singlespacing
+  \UTCstarttoc{toc}
+}
+\clearpage
+
+% --------------------  LIST OF TABLES  --------------------------
+\chapter*{LIST OF TABLES}
+\addcontentsline{toc}{chapter}{LIST OF TABLES}
+{\singlespacing
+  % UTC: the .lot often begins with an initial \addvspace; remove one single-spaced line
+  % so the first entry starts after exactly two blank single-spaced lines under the title.
+  \vspace*{-\baselineskip}
+  \UTCstarttoc{lot}
+}
+\clearpage
+
+% --------------------  LIST OF FIGURES  --------------------------
+\chapter*{LIST OF FIGURES}
+\addcontentsline{toc}{chapter}{LIST OF FIGURES}
+
+% initialize the toggle so the very first \l@figure sees the 1/2 in gap
+\toggletrue{FirstFigureEntry}
+
+{\singlespacing
+  \UTCstarttoc{lof}
+}
+
+\clearpage
+
+% -------------------  LIST OF ABBREVIATIONS  ----------------------
+% Include this page as needed
+\chapter*{LIST OF ABBREVIATIONS}
+\cftaddtitleline{toc}{chapter}{LIST OF ABBREVIATIONS}{\thepage}
+
+\begingroup
+  % turn off paragraph indentation entirely on this page
+  \setlength{\parindent}{0pt}
+
+  {\singlespacing
+    \begin{itemize}[label={}, leftmargin=0pt, itemsep=0pt, parsep=0pt, topsep=0pt]
+      \item ABC, First abbreviation
+      \item DEF, Second abbreviation
+      \item GHI, Third abbreviation
+      % …add more items here…
+    \end{itemize}
+  }
+\endgroup
+
+\clearpage
+
+% --------------------  LIST OF SYMBOLS --------------------------
+% Include this page as needed
+\chapter*{LIST OF SYMBOLS}
+\addcontentsline{toc}{chapter}{LIST OF SYMBOLS}  % add to ToC
+\begingroup
+  \setlength{\parindent}{0pt}    % disable paragraph indent on this page
+  {\singlespacing                % single-space list entries
+    % Use a simple two-column table to avoid underfull \hbox from manual line breaks.
+    % UTC: symbol, comma+space, definition
+    \begin{tabular}{@{}l@{, }p{0.85\textwidth}@{}}
+      $\alpha$ & placeholder definition for alpha \\
+      $\beta$ & placeholder definition for beta \\
+      $\gamma$ & placeholder definition for gamma \\
+      % add more symbols as needed...
+    \end{tabular}
+  }
+\endgroup
+\clearpage
+
+% ------------------------------------------------------------------
+% MAIN BODY (Arabic numerals begin with 1 on the first page of Chapter I)
+% ------------------------------------------------------------------
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+%------------------------------------------------------------------------------%
+% Main text (chapters)
+%------------------------------------------------------------------------------%
+% Keep chapters in separate files to reduce merge conflicts and speed up editing.
+% Tip: while drafting, you can compile only a subset via \includeonly{chapters/ch03_methodology}
+\include{chapters/ch01_intro}
+\include{chapters/ch02_lit_review}
+\include{chapters/ch03_methodology}
+\include{chapters/ch04_results}
+\include{chapters/ch05_discussion}
+\include{chapters/ch06_conclusion}
+\include{chapters/ch07_future_work}
+
+\renewcommand{\bibname}{REFERENCES}
+\nocite{*}
+% Let biblatex add the TOC line on the correct page (fixes off-by-one TOC page number)
+\printbibliography[heading=bibintoc,title={REFERENCES}]
+
+% Delete the below lines up to the VITA if no appendices are needed
+% Add "APPENDIX" header to TOC
+\addtocontents{toc}{\protect\vskip12pt\protect\noindent APPENDIX\par}
+
+% UTC Item 11: Appendix divider page (TOC page number = divider page number)
+% Replace placeholders with real titles (ALL CAPS).
+% For long divider titles, you may insert manual line breaks (\\) in the 3rd argument
+% to create the "inverted pyramid" shape required by UTC.
+\UTCAppendixDivider{A}{APPENDIX TITLE IN ALL CAPS}{TITLE OF APPENDIX A IN ALL CAPS}
+
+% Numberless chapter for the first appendix
+\chapter*{APPENDIX A}
+Placeholder for Appendix A.
+
+% Add more appendices as needed by starting with the divider page code and using B, C, etc.
+
+\chapter*{VITA}
+\addcontentsline{toc}{chapter}{VITA}
+[Your Name] received the [degree] in [field] from [Institution] in [Year]. Placeholder for biographical sketch.
+
+\end{document}
+
+% Template source: UTC Graduate Manuscript Standards (Eighth Edition, Nov 1, 2024).
+% Personal names are intentionally removed so this repo can be shared as a clean template.

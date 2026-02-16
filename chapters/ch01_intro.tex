@@ -1,0 +1,56 @@
+% Add "CHAPTER" header to TOC (place it immediately before Chapter 1)
+\addtocontents{toc}{\protect\vskip12pt\protect\noindent CHAPTER\par}
+\chapter{INTRODUCTION}
+
+\section{Background}
+This section provides background information on the research topic. Replace this placeholder text with a detailed literature review and context.
+
+% Subsections must be either italicized, bolded, etc. Something to differentiate them from sections. This 2nd-level heading is italicized, so all 2nd-level headings would be italicized throughout the document.
+
+\subsection[Headings Indented Example]{\textit{Headings Indented Example}}
+% The text in the braces [] is how this subsection will appear in the table of contents (not italicized).
+Placeholder text.
+\section{Statement of the Problem}
+State the specific problem addressed by this dissertation. This is placeholder text describing the problem. Replace with a clear problem statement.
+\section{Objectives of the Study}
+List the main objectives of the research. For example:
+\begin{itemize}
+  \item Objective 1: Placeholder for objective description.
+  \item Objective 2: Placeholder for objective description.
+\end{itemize}
+\section{Significance of the Study}
+% No \vspace{} here because a double-space is all that's needed between a heading and subheading
+\subsection{Subsection Placeholder}
+Outline the structure of the dissertation. This placeholder text should be replaced with a summary of each chapter's content and its significance.
+\newpage
+
+% Placeholder Figure and Table
+\section{Illustrative Placeholder}
+To demonstrate figure and table insertion, a placeholder figure and table are shown below.
+
+\begin{figure}[htbp]
+  \centering
+  \fbox{\parbox[c][2in][c]{2in}{Placeholder Figure}}
+  % Figure captions should go below the figure.
+  \caption{Placeholder figure demonstrating left-justified caption text below the figure} % No colons or periods.
+  \label{fig:placeholder}
+\end{figure}
+
+% NOTE: Avoid manual \vspace{} between consecutive floats.
+% Use structural controls in the preamble instead (e.g., \floatsep).
+
+\begin{table}[htbp]
+  % Table captions should go above the table.
+  \caption{Placeholder table demonstrating left-justified caption text above the table} % No colons or periods.
+  \label{tab:placeholder}
+  \centering
+  \begin{tabular}{lc}
+    \toprule
+    Item & Value \\
+    \midrule
+    Sample A & 1.23 \\
+    Sample B & 4.56 \\
+    \bottomrule
+  \end{tabular}
+
+\end{table}

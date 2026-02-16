@@ -1,0 +1,146 @@
+# AGENTS.md
+
+Guidance for Codex/Cursor (and any other automated or human “agent”) working in this repository.
+
+This repo contains a University of Tennessee at Chattanooga (UTC) dissertation LaTeX project. The primary objective is **strict compliance with the UTC Graduate Manuscript Standards (Nov 2024)** while keeping the editing workflow stable (MiKTeX + `latexmk` + GitHub sync). The agent should treat formatting requirements as invariants.
+
+---
+
+## Golden rules (do not break these)
+
+1. **Do not change dissertation content** (meaning/wording) unless the user explicitly requests content edits. Formatting changes are allowed.
+2. **Follow UTC Manuscript Standards** as the source of truth for formatting (margins, pagination, headings, fonts, etc.).
+3. **Final-submission PDFs must have no active hyperlinks** (no clickable URLs, DOI links, etc.). Draft PDFs may allow links if helpful, but final must disable them.
+4. **Prefer structural pagination** (e.g., `\pagenumbering{roman}` to `\pagenumbering{arabic}`) and page-style suppression for the committee page number. Do not introduce new ad-hoc `\setcounter` hacks unless there is no structural alternative; if one is used, add a short comment explaining why.
+5. **Keep changes small and reviewable**: one logical fix per branch/commit when possible.
+
+---
+
+## Formatting invariants
+
+- Do not manually insert `\vspace` to tune heading spacing; use the `titlesec` rules in `Dissertation_Main.tex`.
+- Captions, footnotes, lists, and block quotes are forced to UTC-compliant single spacing in the preamble; do not override them locally.
+- Caption punctuation/placement and float spacing are set globally (hang format, space separator, figure captions below and table titles above, float gaps). Do not override locally.
+- LIST OF SYMBOLS: format entries as “symbol, definition” (comma + space between).
+- DOI/URL in REFERENCES are plain text only (no `\href`/`\url` in bib output).
+- Prefer `\UTCFigure`/`\UTCTable` (and `\UTCFigureS`/`\UTCTableS`) wrappers to keep caption placement compliant.
+
+---
+
+## Repo structure (chapters)
+
+- Keep `Dissertation_Main.tex` **lean**: preamble + front matter + the `\include{...}` list + back matter.
+- Put each numbered chapter in its own file under `chapters/`, e.g. `chapters/ch03_methodology.tex`.
+- Include chapters with `\include{chapters/ch03_methodology}` (do **not** add `.tex`).
+- Chapter files must **not** contain `\documentclass`, `\usepackage`, `\begin{document}`, `\end{document}`, `\pagenumbering`, or bibliography/appendix/vita code.
+
+Tip (drafting): you can speed up compiles by adding something like:
+`\includeonly{chapters/ch03_methodology}`
+near the top of `Dissertation_Main.tex` (comment it back out for full builds).
+
+---
+
+## Build + verify (required after any formatting change)
+
+### Build command (Windows, PowerShell)
+Run from repo root:
+
+```powershell
+latexmk -pdfxe -bibtex Dissertation_Main.tex
+```
+
+(Uses XeLaTeX; required for system fonts like Times New Roman / Calibri.)
+
+### Always check the log for problems
+After building, scan `Dissertation_Main.log` for:
+
+- `LaTeX Error`
+- `Undefined references`
+- `Overfull \hbox` (can indicate margin violations)
+- `Underfull \hbox` (usually minor, but still review)
+
+### Hyperlink audit (final mode)
+For **final submission PDFs**, confirm there are **no /URI actions** in the PDF.
+
+Quick check in PowerShell:
+
+```powershell
+Select-String -Pattern "/URI" -Path .\Dissertation_Main.pdf
+```
+
+- If it prints nothing, that’s a good sign.
+- If it prints matches, the PDF contains active links and is **not** acceptable for final submission.
+
+(If the repo has a Python hyperlink-audit script, use that as the primary check.)
+
+### Font audit (final mode)
+UTC requires **Times New Roman or Calibri (11 or 12 pt)** throughout the document text.
+
+- Verify the generated PDF fonts are embedded and the main body font is Times New Roman or Calibri.
+- Use Foxit/Acrobat “Document Properties → Fonts” (fastest).
+- If fonts show Latin Modern / Computer Modern for body text, that is noncompliant and must be corrected.
+
+---
+
+## UTC non-negotiables (high level)
+
+The agent must preserve/implement these behaviors:
+
+- **Margins**: 1 inch on all sides for body pages; special pages/section starts may require **2 inches of white space at top** for the first line of a major heading.
+- **Final PDF links**: no active URL hyperlinks in FINAL submission PDFs (URLs may appear as plain text).
+- **Page numbers**:
+  - Preliminary pages: **roman numerals**, lower-case, centered at bottom.
+  - Committee/approval page is page **i** but **must not print** the page number.
+  - Title page is page **ii** and **must print** `ii`.
+  - Main text uses **arabic** page numbers starting at 1 on Chapter 1.
+- **Committee/approval page content**: start with the dissertation title at the 2" top margin; do not include an “Approved:” label line.
+- **Page number placement**: bottom-center with required bottom whitespace on all numbered pages.
+- **No running headers** (no chapter title headers, etc.).
+- **Section-start spacing**: major headings (ABSTRACT, ACKNOWLEDGMENTS, TABLE OF CONTENTS, CHAPTER pages, REFERENCES, APPENDIX divider pages, VITA) need the UTC-specified top spacing and blank lines between heading/title/body.
+- **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
+
+If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
+
+---
+
+## Git workflow rules
+
+### Branching
+- Never do large formatting work directly on `main`.
+- Use a short-lived feature branch per fix, e.g.:
+  - `pagination-fixes`
+  - `toc-references-pagefix`
+  - `chapter-heading-spacing`
+
+### Commits
+- Prefer **small commits** with specific messages, e.g.:
+  - `format: fix references TOC page number`
+  - `format: enforce 2-inch top spacing on chapter pages`
+  - `docs: add AGENTS + README`
+
+### Do not commit build artifacts
+Unless the user explicitly requests otherwise, do **not** commit:
+- `*.aux *.bbl *.blg *.lof *.lot *.toc *.out *.xdv *.fdb_latexmk *.fls *.synctex.gz *.log`
+- PDFs are optional; treat as *release artifacts*, not source.
+
+If build artifacts are currently being committed, recommend adding/updating `.gitignore`.
+
+---
+
+## Scope & sequencing (timeline awareness)
+
+- **Before defense (Feb 27)**: prioritize **structural/pagination** and **hard compliance** items that would be disruptive later (page numbering, ToC/LoF/LoT correctness, heading spacing rules, margin safety).
+- **After defense**: polish/cleanup items (minor spacing cosmetics, optional refinements, stylistic improvements).
+
+---
+
+## Safety checks before pushing
+
+Before any `git push`:
+1. `git status` is clean (only intended files staged).
+2. Build succeeded with `latexmk`.
+3. Final-mode hyperlink audit passes (if producing a submission PDF).
+4. No new margin problems (watch for `Overfull \hbox`).
+
+
+When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.
