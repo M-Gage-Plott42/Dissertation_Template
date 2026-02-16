@@ -1,5 +1,9 @@
 # Dissertation_Main
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Template CI](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml)
+[![Markdown Lint](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml)
+
 LaTeX dissertation project aligned to **The University of Tennessee at Chattanooga (UTC) Graduate Manuscript Standards (Nov 2024)**.
 
 This repo is intended to be the *source of truth* for writing + formatting, with:
@@ -127,7 +131,7 @@ Chapters are included from `Dissertation_Main.tex` via `\include{chapters/<file>
 
 ## Git workflow (recommended)
 
-Use small feature branches and merge into `main`:
+Use small feature branches and merge into `public-template-clean`:
 
 ```powershell
 git switch -c <branch-name>
@@ -137,9 +141,13 @@ git commit -m "format: <what changed>"
 git push -u origin <branch-name>
 ```
 
-Then merge into `main` (either via PR on GitHub or via CLI).
+Then merge into `public-template-clean` (either via PR on GitHub or via CLI).
 
 ---
+
+## License
+
+This repository is licensed under the MIT License. See `LICENSE`.
 
 ## Notes
 

@@ -114,7 +114,7 @@ If any change risks breaking these rules, the agent should stop and surface the 
 ## Git workflow rules
 
 ### Branching
-- Never do large formatting work directly on `main`.
+- Never do large formatting work directly on the default branch (`public-template-clean`).
 - Use a short-lived feature branch per fix, e.g.:
   - `pagination-fixes`
   - `toc-references-pagefix`
@@ -149,6 +149,7 @@ Before any `git push`:
 2. Build succeeded with `latexmk`.
 3. Final-mode hyperlink audit passes (if producing a submission PDF).
 4. No new margin problems (watch for `Overfull \hbox`).
+5. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.

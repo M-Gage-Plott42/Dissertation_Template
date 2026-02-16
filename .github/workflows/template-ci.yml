@@ -1,0 +1,59 @@
+name: Template CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  template-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install TeX and audit dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            biber \
+            latexmk \
+            poppler-utils \
+            ripgrep \
+            rsync \
+            texlive-bibtex-extra \
+            texlive-fonts-recommended \
+            texlive-latex-extra \
+            texlive-xetex
+
+      - name: Prepare CI build copy
+        run: |
+          mkdir -p /tmp/template-ci
+          rsync -a --delete --exclude='.git' ./ /tmp/template-ci/
+          cd /tmp/template-ci
+
+          # Ubuntu runners generally do not include Times New Roman;
+          # use a metrically similar TeX font for compile-only CI checks.
+          sed -i 's/\\setmainfont{Times New Roman}/\\setmainfont{TeX Gyre Termes}/' Dissertation_Main.tex
+
+      - name: Build (draft mode) and scan log
+        run: |
+          cd /tmp/template-ci
+          latexmk -C
+          latexmk -pdfxe -bibtex Dissertation_Main.tex
+
+          ! rg -n -F "LaTeX Error" Dissertation_Main.log
+          ! rg -n -F "Undefined references" Dissertation_Main.log
+          ! rg -n -F "Overfull \\\\hbox" Dissertation_Main.log
+          ! rg -n -F "Underfull \\\\hbox" Dissertation_Main.log
+
+      - name: Build (final mode) and audit active links
+        run: |
+          cd /tmp/template-ci
+          rg -n "\\\\UTCFinalfalse" Dissertation_Main.tex
+          sed -i 's/\\UTCFinalfalse/\\UTCFinaltrue/' Dissertation_Main.tex
+
+          latexmk -C
+          latexmk -pdfxe -bibtex Dissertation_Main.tex
+          ! rg -a -n '/URI' Dissertation_Main.pdf
