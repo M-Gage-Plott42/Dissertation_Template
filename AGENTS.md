@@ -96,7 +96,7 @@ The agent must preserve/implement these behaviors:
 - **Committee/approval page content**: start with the dissertation title at the 2" top margin; do not include an “Approved:” label line.
 - **Page number placement**: bottom-center with required bottom whitespace on all numbered pages.
 - **No running headers** (no chapter title headers, etc.).
-- **Section-start spacing**: major headings (ABSTRACT, ACKNOWLEDGMENTS, TABLE OF CONTENTS, CHAPTER pages, REFERENCES, APPENDIX divider pages, VITA) need the UTC-specified top spacing and blank lines between heading/title/body.
+- **Section-start spacing**: major headings (ABSTRACT, ACKNOWLEDGEMENTS, TABLE OF CONTENTS, CHAPTER pages, REFERENCES, APPENDIX divider pages, VITA) need the UTC-specified top spacing and blank lines between heading/title/body.
 - **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
 
 If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
