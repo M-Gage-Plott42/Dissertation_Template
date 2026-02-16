@@ -1,8 +1,9 @@
-# Dissertation_Main
+# UTC Dissertation Template
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Template CI](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml)
-[![Markdown Lint](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml)
+[![License](https://img.shields.io/github/license/M-Gage-Plott42/Dissertation_Template?label=License)](LICENSE)
+[![Template CI](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml/badge.svg?branch=public-template-clean)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml)
+[![Markdown Lint](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml/badge.svg?branch=public-template-clean)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml)
+[![Release](https://img.shields.io/github/v/release/M-Gage-Plott42/Dissertation_Template?label=Release)](https://github.com/M-Gage-Plott42/Dissertation_Template/releases)
 
 LaTeX dissertation project aligned to **The University of Tennessee at
 Chattanooga (UTC) Graduate Manuscript Standards (Nov 2024)**.
