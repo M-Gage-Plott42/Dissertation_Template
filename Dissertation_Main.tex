@@ -155,7 +155,7 @@
 % already begins 1in below the page top, your chapter heading sits at 2in on
 % the *first* page.  Subsequent pages in the chapter simply use the ordinary
 % 1in margin (no extra space is re‐inserted).
-\titlespacing*{\chapter}{0pt}{0.75in}{0.3in}
+\titlespacing*{\chapter}{0pt}{0.75in}{0.05in}
 % Push unnumbered chapter titles down so the title line sits ~2in from page top:
 \titlespacing*{name=\chapter,numberless}{0pt}{0.35in}{0pt}
 \setlength{\headheight}{0.2in} 
@@ -231,10 +231,10 @@
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \setlength{\cftaftertoctitleskip}{0.5in}
 \setlength{\cftparskip}{0pt}
-\setlength{\cftbeforechapskip}{12pt}
+\setlength{\cftbeforechapskip}{0pt}
 \setlength{\cftbeforesecskip}{0pt}
 \setlength{\cftbeforesubsecskip}{0pt}
-\setlength{\cftbeforetabskip}{12pt}
+\setlength{\cftbeforetabskip}{0pt}
 \setlength{\cftbeforefigskip}{0pt}
 \setlength{\cftfigindent}{0pt}   % no indent on figure entries
 \setlength{\cfttabindent}{0pt}   % no indent on table entries
@@ -247,7 +247,7 @@
   \pretocmd{\l@figure}{%
     \iftoggle{FirstFigureEntry}{%
       % first entry
-      \vskip-2pt\togglefalse{FirstFigureEntry}%
+      \vskip-12pt\togglefalse{FirstFigureEntry}%
     }{%
       % all subsequent entries
       \unskip\vskip0pt%
@@ -630,9 +630,8 @@ The author would like to thank [Advisor Name], committee members, and colleagues
 \chapter*{LIST OF TABLES}
 \addcontentsline{toc}{chapter}{LIST OF TABLES}
 {\singlespacing
-  % UTC: the .lot often begins with an initial \addvspace; remove one single-spaced line
-  % so the first entry starts after exactly two blank single-spaced lines under the title.
-  \vspace*{-\baselineskip}
+  % UTC: .lot starts with \addvspace; compensate so first entry sits below the standard title gap.
+  \vspace*{-2\baselineskip}
   \UTCstarttoc{lot}
 }
 \clearpage
@@ -645,6 +644,8 @@ The author would like to thank [Advisor Name], committee members, and colleagues
 \toggletrue{FirstFigureEntry}
 
 {\singlespacing
+  % UTC: .lof starts with \addvspace; compensate initial entry offset.
+  \vspace*{-\baselineskip}
   \UTCstarttoc{lof}
 }
 
@@ -658,6 +659,7 @@ The author would like to thank [Advisor Name], committee members, and colleagues
 \begingroup
   % turn off paragraph indentation entirely on this page
   \setlength{\parindent}{0pt}
+  \vspace*{-\UTCdblskip}
 
   {\singlespacing
     \begin{itemize}[label={}, leftmargin=0pt, itemsep=0pt, parsep=0pt, topsep=0pt]
@@ -677,6 +679,7 @@ The author would like to thank [Advisor Name], committee members, and colleagues
 \addcontentsline{toc}{chapter}{LIST OF SYMBOLS}  % add to ToC
 \begingroup
   \setlength{\parindent}{0pt}    % disable paragraph indent on this page
+  \vspace*{-0.5\baselineskip}
   {\singlespacing                % single-space list entries
     % Use a simple two-column table to avoid underfull \hbox from manual line breaks.
     % UTC: symbol, comma+space, definition
@@ -710,9 +713,13 @@ The author would like to thank [Advisor Name], committee members, and colleagues
 \include{chapters/ch07_future_work}
 
 \renewcommand{\bibname}{REFERENCES}
+\defbibheading{utcrefs}[REFERENCES]{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+  \vspace*{-0.25\baselineskip}%
+}
 \nocite{*}
-% Let biblatex add the TOC line on the correct page (fixes off-by-one TOC page number)
-\printbibliography[heading=bibintoc,title={REFERENCES}]
+\printbibliography[heading=utcrefs,title={REFERENCES}]
 
 % Delete the below lines up to the VITA if no appendices are needed
 % Add "APPENDIX" header to TOC
