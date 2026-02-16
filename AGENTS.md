@@ -16,6 +16,14 @@ This repo contains a University of Tennessee at Chattanooga (UTC) dissertation L
 
 ---
 
+## Standards source files
+
+- Treat `graduate-manuscript-standards-nov-2024.pdf` as the canonical standards artifact tracked by this repo.
+- Keep `utc-standards-index.md` and `graduate-manuscript-standards-nov-2024.sha256` in sync with that PDF.
+- If the standards PDF is replaced/updated, refresh the checksum and index notes in the same commit.
+
+---
+
 ## Formatting invariants
 
 - Do not manually insert `\vspace` to tune heading spacing; use the `titlesec` rules in `Dissertation_Main.tex`.
@@ -121,7 +129,7 @@ If any change risks breaking these rules, the agent should stop and surface the 
 ### Do not commit build artifacts
 Unless the user explicitly requests otherwise, do **not** commit:
 - `*.aux *.bbl *.blg *.lof *.lot *.toc *.out *.xdv *.fdb_latexmk *.fls *.synctex.gz *.log`
-- PDFs are optional; treat as *release artifacts*, not source.
+- PDFs are optional; treat as *release artifacts*, not source, **except** the canonical tracked standards PDF (`graduate-manuscript-standards-nov-2024.pdf`).
 
 If build artifacts are currently being committed, recommend adding/updating `.gitignore`.
 

@@ -7,6 +7,14 @@ This repo is intended to be the *source of truth* for writing + formatting, with
 - Git/GitHub sync for working across machines
 - A draft/final toggle to disable hyperlinks in submission PDFs
 
+## UTC standards source files
+
+- `graduate-manuscript-standards-nov-2024.pdf` is the canonical UTC formatting source used by this template.
+- `utc-standards-index.md` summarizes edition, key requirements used by the template, and local interpretation notes.
+- `graduate-manuscript-standards-nov-2024.sha256` stores the checksum for integrity and provenance.
+
+When updating the standards PDF, update all three files in the same commit.
+
 ---
 
 ## Requirements (Windows)

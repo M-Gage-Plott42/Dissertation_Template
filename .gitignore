@@ -26,6 +26,7 @@ build/
 # Keep zip exports out of git
 *.pdf
 *.zip
+!graduate-manuscript-standards-nov-2024.pdf
 
 # Ignore Windows download metadata sidecars
 *:Zone.Identifier
