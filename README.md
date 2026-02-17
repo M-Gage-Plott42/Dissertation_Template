@@ -1,8 +1,8 @@
 # UTC Dissertation Template
 
 [![License](https://img.shields.io/github/license/M-Gage-Plott42/Dissertation_Template?label=License)](LICENSE)
-[![Template CI](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml/badge.svg?branch=public-template-clean)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml)
-[![Markdown Lint](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml/badge.svg?branch=public-template-clean)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml)
+[![Template CI](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml)
+[![Markdown Lint](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml)
 [![Release](https://img.shields.io/github/v/release/M-Gage-Plott42/Dissertation_Template?label=Release)](https://github.com/M-Gage-Plott42/Dissertation_Template/releases)
 
 LaTeX dissertation project aligned to **The University of Tennessee at
@@ -152,7 +152,7 @@ Chapters are included from `Dissertation_Main.tex` via
 
 ## Git workflow (recommended)
 
-Use small feature branches and merge into `public-template-clean`:
+Use small feature branches and merge into `main`:
 
 ```powershell
 git switch -c <branch-name>
@@ -162,13 +162,19 @@ git commit -m "format: <what changed>"
 git push -u origin <branch-name>
 ```
 
-Then merge into `public-template-clean` (either via PR on GitHub or via CLI).
+Then merge into `main` (either via PR on GitHub or via CLI).
 
 ---
 
 ## License
 
 This repository is licensed under the MIT License. See `LICENSE`.
+
+## Repository metadata
+
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
 
 ## Notes
 

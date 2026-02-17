@@ -114,7 +114,7 @@ If any change risks breaking these rules, the agent should stop and surface the 
 ## Git workflow rules
 
 ### Branching
-- Never do large formatting work directly on the default branch (`public-template-clean`).
+- Never do large formatting work directly on the default branch (`main`).
 - Use a short-lived feature branch per fix, e.g.:
   - `pagination-fixes`
   - `toc-references-pagefix`
