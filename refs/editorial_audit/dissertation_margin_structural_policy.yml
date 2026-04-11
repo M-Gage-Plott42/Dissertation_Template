@@ -1,0 +1,20 @@
+{
+  "purpose": "Guard the reusable rendered structural margin contract: 1-inch left/right body-box bounds, bottom-centered page-number/footer placement, and no running headers or footer text beyond the page number.",
+  "body_box": {
+    "left_margin_min_in": 1.0,
+    "right_margin_min_in": 1.0,
+    "tolerance_in": 0.05
+  },
+  "footer": {
+    "header_clear_band_in": 0.8,
+    "footer_band_height_in": 1.25,
+    "page_number_bottom_whitespace_range_in": [
+      0.95,
+      1.05
+    ],
+    "page_number_center_tolerance_in": 0.12,
+    "suppressed_page_labels": [
+      "i"
+    ]
+  }
+}

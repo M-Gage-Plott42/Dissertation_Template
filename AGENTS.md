@@ -138,6 +138,17 @@ python .\scripts\check_dissertation_page_geometry.py
 - This is the primary rendered-PDF check for a small set of inch-based page-family
   geometry sentinels before opening the heavier structural/rendered margin stack.
 
+### Structural margin audit
+Run:
+
+```powershell
+python .\scripts\check_dissertation_margin_structural.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_margin_structural_policy.yml`.
+- This is the broader rendered-PDF check for reusable body-box bounds, footer/page-number
+  placement, and no-running-header/footer invariants.
+
 ---
 
 ## UTC non-negotiables (high level)
@@ -163,6 +174,9 @@ The agent must preserve/implement these behaviors:
   families must hold the 2-inch top contract, appendix divider families must
   remain centered, and ordinary numbered body pages must keep bottom-centered
   page numbers with about 1 inch of bottom white space.
+- **Structural margins**: rendered text must remain inside the 1-inch left/right
+  body box, numbered pages must keep clean footer bands, and running
+  headers/footers are not permitted.
 - **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
 
 If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
@@ -211,8 +225,9 @@ Before any `git push`:
 6. Abstract-cap audit passes.
 7. TOC sentinel audit passes.
 8. Page-geometry sentinel audit passes.
-9. No new margin problems (watch for `Overfull \hbox`).
-10. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+9. Structural margin audit passes.
+10. No new margin problems (watch for `Overfull \hbox`).
+11. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.

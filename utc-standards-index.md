@@ -34,6 +34,10 @@ Template-facing non-negotiables mapped from the standards:
 - Key rendered page families should hold the UTC geometry contract: 2-inch
   opener spacing where required, centered appendix divider sheets, and
   bottom-centered page numbers with about 1 inch of bottom white space.
+- The reusable structural margin contract is broader than the page-family
+  sentinels: rendered text should stay inside the 1-inch left/right body box,
+  numbered pages should keep clean footer bands, and running headers/footers
+  are not permitted.
 - References heading/page spacing and entry spacing must follow UTC examples.
 - TOC/LoT/LoF and chapter/section heading formatting must remain UTC-compliant.
 

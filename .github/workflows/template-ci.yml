@@ -68,3 +68,4 @@ jobs:
           python3 scripts/check_dissertation_abstract_cap.py
           python3 scripts/check_dissertation_toc_contract.py
           python3 scripts/check_dissertation_page_geometry.py
+          python3 scripts/check_dissertation_margin_structural.py

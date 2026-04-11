@@ -94,6 +94,8 @@ Use it instead of raw `/URI` grep.
   `python .\scripts\check_dissertation_toc_contract.py`.
 - Page-geometry sentinel audit passes with
   `python .\scripts\check_dissertation_page_geometry.py`.
+- Structural margin audit passes with
+  `python .\scripts\check_dissertation_margin_structural.py`.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
@@ -189,6 +191,28 @@ This audit checks the rendered PDF only, with policy values in inches, for:
 Policy lives in `refs/editorial_audit/dissertation_page_geometry_policy.yml`.
 Keep this lane limited to generic page-family sentinels; the broader structural
 margin audit and optional overlay tooling belong to the next tier.
+
+---
+
+## Structural margin audit
+
+Primary check:
+
+```powershell
+python .\scripts\check_dissertation_margin_structural.py
+```
+
+This audit checks the rendered PDF only for:
+
+- reusable 1-inch left/right body-box bounds across pages
+- bottom-centered page-number placement on numbered pages
+- footer whitespace near 1 inch below the page number
+- no running-header text in the header band
+- no footer-band text beyond the printed page number
+
+Policy lives in `refs/editorial_audit/dissertation_margin_structural_policy.yml`.
+This is the broader reusable margin/body-box lane; optional overlay proofing and
+heavier rendered exact-margin stacks stay out of the first template port.
 
 ---
 
