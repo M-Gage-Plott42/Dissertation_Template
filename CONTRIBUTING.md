@@ -31,6 +31,7 @@ When editing LaTeX/template behavior, also ensure:
 - Preliminary-pages audit passes with `python .\scripts\check_dissertation_prelim_contract.py`.
 - Abstract-cap audit passes with `python .\scripts\check_dissertation_abstract_cap.py`.
 - TOC sentinel audit passes with `python .\scripts\check_dissertation_toc_contract.py`.
+- Page-geometry sentinel audit passes with `python .\scripts\check_dissertation_page_geometry.py`.
 
 ## Commit guidance
 

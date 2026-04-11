@@ -92,6 +92,8 @@ Use it instead of raw `/URI` grep.
   `python .\scripts\check_dissertation_abstract_cap.py`.
 - TOC sentinel audit passes with
   `python .\scripts\check_dissertation_toc_contract.py`.
+- Page-geometry sentinel audit passes with
+  `python .\scripts\check_dissertation_page_geometry.py`.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
@@ -163,6 +165,30 @@ Policy lives in `refs/editorial_audit/dissertation_toc_contract_policy.yml`.
 Keep this expectations surface small and template-generic; deeper manuscript-
 specific chapter/table/figure inventories belong in dissertation-local audits,
 not in the public template.
+
+---
+
+## Page-geometry sentinel audit
+
+Primary check:
+
+```powershell
+python .\scripts\check_dissertation_page_geometry.py
+```
+
+This audit checks the rendered PDF only, with policy values in inches, for:
+
+- committee-page title top position
+- title-page title top position
+- abstract opener top position
+- first numbered chapter opener top position
+- references opener top position
+- first appendix divider centering, if present
+- one ordinary Arabic-number continuation page for bottom-centered page-number placement
+
+Policy lives in `refs/editorial_audit/dissertation_page_geometry_policy.yml`.
+Keep this lane limited to generic page-family sentinels; the broader structural
+margin audit and optional overlay tooling belong to the next tier.
 
 ---
 

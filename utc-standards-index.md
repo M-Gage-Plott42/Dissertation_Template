@@ -31,6 +31,9 @@ Template-facing non-negotiables mapped from the standards:
 - Final submission PDF must not contain active URL hyperlinks.
 - TOC / LoT / LoF entries must match the rendered document, including appendix
   divider-page numbering in the TOC.
+- Key rendered page families should hold the UTC geometry contract: 2-inch
+  opener spacing where required, centered appendix divider sheets, and
+  bottom-centered page numbers with about 1 inch of bottom white space.
 - References heading/page spacing and entry spacing must follow UTC examples.
 - TOC/LoT/LoF and chapter/section heading formatting must remain UTC-compliant.
 

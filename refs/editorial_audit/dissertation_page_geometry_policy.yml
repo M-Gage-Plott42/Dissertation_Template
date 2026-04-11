@@ -1,0 +1,99 @@
+{
+  "purpose": "Guard a small set of UTC-sensitive rendered page-geometry families in inches only: committee/title/abstract/chapter/references openers, the first appendix divider if present, and one ordinary continuation page for Arabic page-number placement.",
+  "heading_top_checks": [
+    {
+      "name": "committee page title family",
+      "required_patterns": [
+        "^TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+        "\\(Chair\\)",
+        "Professor of \\[Department\\]"
+      ],
+      "phrase": "TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+      "top_range_in": [
+        1.95,
+        2.05
+      ]
+    },
+    {
+      "name": "title page title family",
+      "required_patterns": [
+        "^TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+        "Degree Name",
+        "Month Year"
+      ],
+      "phrase": "TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+      "top_range_in": [
+        1.95,
+        2.05
+      ]
+    },
+    {
+      "name": "abstract opener family",
+      "required_patterns": [
+        "^ABSTRACT",
+        "maximum word count"
+      ],
+      "phrase": "ABSTRACT",
+      "top_range_in": [
+        1.95,
+        2.05
+      ]
+    },
+    {
+      "name": "first chapter opener family",
+      "required_patterns": [
+        "^CHAPTER 1",
+        "INTRODUCTION"
+      ],
+      "phrase": "CHAPTER 1",
+      "top_range_in": [
+        1.95,
+        2.05
+      ]
+    },
+    {
+      "name": "references opener family",
+      "required_patterns": [
+        "^REFERENCES",
+        "\\[1\\]"
+      ],
+      "phrase": "REFERENCES",
+      "top_range_in": [
+        1.95,
+        2.05
+      ]
+    }
+  ],
+  "appendix_divider_checks": [
+    {
+      "name": "first appendix divider family",
+      "required_patterns": [
+        "^APPENDIX A",
+        "Title of Appendix A"
+      ],
+      "appendix_phrase": "APPENDIX A",
+      "title_phrase": "Title of Appendix A",
+      "center_x_tolerance_in": 0.12,
+      "center_y_range_in": [
+        5.1,
+        5.35
+      ],
+      "optional": true
+    }
+  ],
+  "page_number_checks": [
+    {
+      "name": "ordinary Arabic continuation page",
+      "required_patterns": [
+        "^1\\.4",
+        "Subsection Placeholder"
+      ],
+      "expected_label": "2",
+      "bottom_whitespace_range_in": [
+        0.95,
+        1.05
+      ],
+      "center_x_tolerance_in": 0.12
+    }
+  ]
+}

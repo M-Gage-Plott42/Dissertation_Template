@@ -127,6 +127,17 @@ python .\scripts\check_dissertation_toc_contract.py
 - This is the primary rendered-PDF check for template-sized TOC sentinels whose
   rendered page labels must match the current body pages.
 
+### Page-geometry sentinel audit
+Run:
+
+```powershell
+python .\scripts\check_dissertation_page_geometry.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_page_geometry_policy.yml`.
+- This is the primary rendered-PDF check for a small set of inch-based page-family
+  geometry sentinels before opening the heavier structural/rendered margin stack.
+
 ---
 
 ## UTC non-negotiables (high level)
@@ -148,6 +159,10 @@ The agent must preserve/implement these behaviors:
   the rendered preliminary-page PDF surface.
 - **TOC/list exactness**: rendered TOC/list sentinel entries must match the live
   body-page labels, and appendix TOC entries must point to divider pages.
+- **Page-family geometry**: committee/title/abstract/chapter/reference opener
+  families must hold the 2-inch top contract, appendix divider families must
+  remain centered, and ordinary numbered body pages must keep bottom-centered
+  page numbers with about 1 inch of bottom white space.
 - **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
 
 If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
@@ -195,8 +210,9 @@ Before any `git push`:
 5. Preliminary-pages audit passes.
 6. Abstract-cap audit passes.
 7. TOC sentinel audit passes.
-8. No new margin problems (watch for `Overfull \hbox`).
-9. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+8. Page-geometry sentinel audit passes.
+9. No new margin problems (watch for `Overfull \hbox`).
+10. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.
