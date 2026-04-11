@@ -1,0 +1,29 @@
+{
+  "purpose": "CI-only fallback font policy for Linux builds that substitute TeX Gyre Termes when Times New Roman is unavailable on the runner.",
+  "approved_body_prefixes": [
+    "TeXGyreTermes",
+    "TimesNewRoman",
+    "Calibri"
+  ],
+  "allowed_aux_prefixes": [
+    "CM",
+    "STIX",
+    "MSBM",
+    "dsrom",
+    "Courier",
+    "CourierNew",
+    "Consolas",
+    "NimbusMono",
+    "DejaVuSansMono",
+    "LMMono"
+  ],
+  "disallowed_text_tokens": [
+    "LatinModern",
+    "LMRoman",
+    "LMSans",
+    "CMUSerif",
+    "CMUSans",
+    "CMUTypewriter",
+    "ComputerModern"
+  ]
+}

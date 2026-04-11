@@ -1,0 +1,28 @@
+{
+  "purpose": "Fail when the rendered dissertation PDF lacks UTC-approved body fonts or includes obvious noncompliant body-text families.",
+  "approved_body_prefixes": [
+    "TimesNewRoman",
+    "Calibri"
+  ],
+  "allowed_aux_prefixes": [
+    "CM",
+    "STIX",
+    "MSBM",
+    "dsrom",
+    "Courier",
+    "CourierNew",
+    "Consolas",
+    "NimbusMono",
+    "DejaVuSansMono",
+    "LMMono"
+  ],
+  "disallowed_text_tokens": [
+    "LatinModern",
+    "LMRoman",
+    "LMSans",
+    "CMUSerif",
+    "CMUSans",
+    "CMUTypewriter",
+    "ComputerModern"
+  ]
+}

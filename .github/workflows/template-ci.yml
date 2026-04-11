@@ -23,12 +23,14 @@ jobs:
             biber \
             latexmk \
             poppler-utils \
+            python3-pip \
             ripgrep \
             rsync \
             texlive-bibtex-extra \
             texlive-fonts-recommended \
             texlive-latex-extra \
             texlive-xetex
+          python3 -m pip install --break-system-packages PyMuPDF
 
       - name: Prepare CI build copy
         run: |
@@ -59,4 +61,6 @@ jobs:
 
           latexmk -C
           latexmk -pdfxe -bibtex Dissertation_Main.tex
-          ! rg -a -n '/URI' Dissertation_Main.pdf
+          python3 scripts/check_dissertation_hyperlinks.py
+          python3 scripts/check_dissertation_fonts.py \
+            --policy refs/editorial_audit/dissertation_font_policy_ci.yml

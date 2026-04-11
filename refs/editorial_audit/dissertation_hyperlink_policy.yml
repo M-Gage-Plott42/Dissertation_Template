@@ -1,0 +1,4 @@
+{
+  "purpose": "Fail when the rendered final dissertation PDF contains live links or PDF annotations.",
+  "allow_any_links": false
+}

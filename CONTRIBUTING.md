@@ -26,7 +26,8 @@ When editing workflows/docs/repo metadata, ensure:
 When editing LaTeX/template behavior, also ensure:
 
 - Build succeeds with `latexmk -pdfxe -bibtex Dissertation_Main.tex`.
-- Final-mode PDF hyperlink audit shows no active `/URI` entries.
+- Final-mode hyperlink audit passes with `python .\scripts\check_dissertation_hyperlinks.py`.
+- Final-mode font audit passes with `python .\scripts\check_dissertation_fonts.py`.
 
 ## Commit guidance
 

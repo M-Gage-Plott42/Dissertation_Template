@@ -68,24 +68,29 @@ After building, scan `Dissertation_Main.log` for:
 - `Underfull \hbox` (usually minor, but still review)
 
 ### Hyperlink audit (final mode)
-For **final submission PDFs**, confirm there are **no /URI actions** in the PDF.
+For **final submission PDFs**, use the rendered-PDF hyperlink audit script as
+the primary check.
 
-Quick check in PowerShell:
+Run in PowerShell:
 
 ```powershell
-Select-String -Pattern "/URI" -Path .\Dissertation_Main.pdf
+python .\scripts\check_dissertation_hyperlinks.py
 ```
 
-- If it prints nothing, that’s a good sign.
-- If it prints matches, the PDF contains active links and is **not** acceptable for final submission.
-
-(If the repo has a Python hyperlink-audit script, use that as the primary check.)
+- If it passes, the PDF contains no live links or PDF annotations.
+- If it fails, the PDF is **not** acceptable for final submission.
 
 ### Font audit (final mode)
 UTC requires **Times New Roman or Calibri (11 or 12 pt)** throughout the document text.
 
-- Verify the generated PDF fonts are embedded and the main body font is Times New Roman or Calibri.
-- Use Foxit/Acrobat “Document Properties → Fonts” (fastest).
+- Run:
+
+```powershell
+python .\scripts\check_dissertation_fonts.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_font_policy.yml`.
+- Use Foxit/Acrobat “Document Properties → Fonts” only as a manual spot-check.
 - If fonts show Latin Modern / Computer Modern for body text, that is noncompliant and must be corrected.
 
 ---
@@ -147,9 +152,10 @@ If build artifacts are currently being committed, recommend adding/updating `.gi
 Before any `git push`:
 1. `git status` is clean (only intended files staged).
 2. Build succeeded with `latexmk`.
-3. Final-mode hyperlink audit passes (if producing a submission PDF).
-4. No new margin problems (watch for `Overfull \hbox`).
-5. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+3. Final-mode hyperlink audit passes.
+4. Final-mode font audit passes.
+5. No new margin problems (watch for `Overfull \hbox`).
+6. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.

@@ -72,15 +72,14 @@ hyperlink behavior:
 
 ### Final PDF hyperlink audit
 
-Quick check (PowerShell):
+Primary check:
 
 ```powershell
-Select-String -Pattern "/URI" -Path .\Dissertation_Main.pdf
+python .\scripts\check_dissertation_hyperlinks.py
 ```
 
-If no matches: good.
-If matches appear: the PDF contains active links and must be fixed before
-submission.
+This audit inspects the rendered PDF for live link objects and annotations.
+Use it instead of raw `/URI` grep.
 
 ---
 
@@ -98,12 +97,30 @@ submission.
 
 UTC requires **Times New Roman or Calibri (11 or 12 pt)** for document text.
 
-After compiling, verify in your PDF viewer:
+Primary check:
+
+```powershell
+python .\scripts\check_dissertation_fonts.py
+```
+
+This audit verifies embedded rendered PDF font families against the policy in
+`refs/editorial_audit/dissertation_font_policy.yml`.
+
+Manual spot-check after the script still makes sense:
 
 - "Document Properties -> Fonts" shows Times New Roman or Calibri embedded
   for body text.
 - Small exceptions may exist for math or monospace code, but the *main body
   font* should comply.
+
+CI note:
+
+- GitHub Actions uses a compile-only Linux fallback font (`TeX Gyre Termes`)
+  because the runner does not ship Times New Roman or Calibri.
+- The CI workflow therefore uses the CI-specific policy file
+  `refs/editorial_audit/dissertation_font_policy_ci.yml`.
+- Local/final dissertation compliance still uses the default policy and UTC's
+  approved fonts.
 
 ---
 
