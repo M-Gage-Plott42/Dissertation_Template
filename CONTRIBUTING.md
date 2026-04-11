@@ -29,6 +29,7 @@ When editing LaTeX/template behavior, also ensure:
 - Final-mode hyperlink audit passes with `python .\scripts\check_dissertation_hyperlinks.py`.
 - Final-mode font audit passes with `python .\scripts\check_dissertation_fonts.py`.
 - Preliminary-pages audit passes with `python .\scripts\check_dissertation_prelim_contract.py`.
+- Abstract-cap audit passes with `python .\scripts\check_dissertation_abstract_cap.py`.
 
 ## Commit guidance
 

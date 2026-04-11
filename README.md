@@ -88,6 +88,8 @@ Use it instead of raw `/URI` grep.
 - FINAL build has no active URL links (per UTC).
 - Preliminary-pages audit passes with
   `python .\scripts\check_dissertation_prelim_contract.py`.
+- Abstract-cap audit passes with
+  `python .\scripts\check_dissertation_abstract_cap.py`.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
@@ -112,6 +114,28 @@ This audit checks the rendered PDF for:
 Policy lives in `refs/editorial_audit/dissertation_prelim_contract_policy.yml`.
 When adapting the template for a real manuscript, update the degree phrase and
 copyright-page toggle there to match the intended submission state.
+
+---
+
+## Abstract-cap audit
+
+Primary check:
+
+```powershell
+python .\scripts\check_dissertation_abstract_cap.py
+```
+
+This audit checks the rendered PDF for:
+
+- `ABSTRACT` as the start heading
+- a configurable set of stop headings for the next preliminary major page
+- heading-delimited rendered-text extraction only
+- UTC's dissertation abstract cap of 350 words by default
+
+Policy lives in `refs/editorial_audit/dissertation_abstract_policy.yml`.
+When adapting the template for another manuscript flow, update the stop
+headings and max-word cap there rather than hard-coding page windows in the
+script.
 
 ---
 

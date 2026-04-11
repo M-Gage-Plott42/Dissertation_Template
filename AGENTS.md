@@ -105,6 +105,17 @@ python .\scripts\check_dissertation_prelim_contract.py
   printed `i`, bottom-centered prelim numerals, title-page degree phrase, and
   optional copyright-page handling.
 
+### Abstract-cap audit
+Run:
+
+```powershell
+python .\scripts\check_dissertation_abstract_cap.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_abstract_policy.yml`.
+- This is the primary rendered-PDF check for heading-delimited abstract
+  extraction and UTC's dissertation abstract cap.
+
 ---
 
 ## UTC non-negotiables (high level)
@@ -122,6 +133,8 @@ The agent must preserve/implement these behaviors:
 - **Page number placement**: bottom-center with required bottom whitespace on all numbered pages.
 - **No running headers** (no chapter title headers, etc.).
 - **Section-start spacing**: major headings (ABSTRACT, ACKNOWLEDGEMENTS, TABLE OF CONTENTS, CHAPTER pages, REFERENCES, APPENDIX divider pages, VITA) need the UTC-specified top spacing and blank lines between heading/title/body.
+- **Abstract cap**: dissertation abstracts must remain at or below 350 words in
+  the rendered preliminary-page PDF surface.
 - **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
 
 If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
@@ -167,8 +180,9 @@ Before any `git push`:
 3. Final-mode hyperlink audit passes.
 4. Final-mode font audit passes.
 5. Preliminary-pages audit passes.
-6. No new margin problems (watch for `Overfull \hbox`).
-7. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+6. Abstract-cap audit passes.
+7. No new margin problems (watch for `Overfull \hbox`).
+8. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.

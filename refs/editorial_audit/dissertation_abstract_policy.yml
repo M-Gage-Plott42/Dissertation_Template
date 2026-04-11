@@ -1,0 +1,17 @@
+{
+  "purpose": "Guard the template dissertation's rendered abstract against UTC's dissertation cap using heading-delimited rendered-PDF extraction only.",
+  "start_heading": "ABSTRACT",
+  "stop_headings": [
+    "DEDICATION",
+    "ACKNOWLEDGEMENTS",
+    "ACKNOWLEDGMENTS",
+    "TABLE OF CONTENTS",
+    "LIST OF TABLES",
+    "LIST OF FIGURES",
+    "LIST OF ABBREVIATIONS",
+    "LIST OF SYMBOLS",
+    "CHAPTER I",
+    "CHAPTER 1"
+  ],
+  "max_words": 350
+}
