@@ -29,6 +29,8 @@ Template-facing non-negotiables mapped from the standards:
 - Page-number placement: bottom-center with required bottom whitespace.
 - No running headers/footers.
 - Final submission PDF must not contain active URL hyperlinks.
+- TOC / LoT / LoF entries must match the rendered document, including appendix
+  divider-page numbering in the TOC.
 - References heading/page spacing and entry spacing must follow UTC examples.
 - TOC/LoT/LoF and chapter/section heading formatting must remain UTC-compliant.
 

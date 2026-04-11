@@ -116,6 +116,17 @@ python .\scripts\check_dissertation_abstract_cap.py
 - This is the primary rendered-PDF check for heading-delimited abstract
   extraction and UTC's dissertation abstract cap.
 
+### TOC sentinel audit
+Run:
+
+```powershell
+python .\scripts\check_dissertation_toc_contract.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_toc_contract_policy.yml`.
+- This is the primary rendered-PDF check for template-sized TOC sentinels whose
+  rendered page labels must match the current body pages.
+
 ---
 
 ## UTC non-negotiables (high level)
@@ -135,6 +146,8 @@ The agent must preserve/implement these behaviors:
 - **Section-start spacing**: major headings (ABSTRACT, ACKNOWLEDGEMENTS, TABLE OF CONTENTS, CHAPTER pages, REFERENCES, APPENDIX divider pages, VITA) need the UTC-specified top spacing and blank lines between heading/title/body.
 - **Abstract cap**: dissertation abstracts must remain at or below 350 words in
   the rendered preliminary-page PDF surface.
+- **TOC/list exactness**: rendered TOC/list sentinel entries must match the live
+  body-page labels, and appendix TOC entries must point to divider pages.
 - **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
 
 If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
@@ -181,8 +194,9 @@ Before any `git push`:
 4. Final-mode font audit passes.
 5. Preliminary-pages audit passes.
 6. Abstract-cap audit passes.
-7. No new margin problems (watch for `Overfull \hbox`).
-8. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+7. TOC sentinel audit passes.
+8. No new margin problems (watch for `Overfull \hbox`).
+9. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.

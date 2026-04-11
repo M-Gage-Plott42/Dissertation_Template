@@ -90,6 +90,8 @@ Use it instead of raw `/URI` grep.
   `python .\scripts\check_dissertation_prelim_contract.py`.
 - Abstract-cap audit passes with
   `python .\scripts\check_dissertation_abstract_cap.py`.
+- TOC sentinel audit passes with
+  `python .\scripts\check_dissertation_toc_contract.py`.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
@@ -136,6 +138,31 @@ Policy lives in `refs/editorial_audit/dissertation_abstract_policy.yml`.
 When adapting the template for another manuscript flow, update the stop
 headings and max-word cap there rather than hard-coding page windows in the
 script.
+
+---
+
+## TOC sentinel audit
+
+Primary check:
+
+```powershell
+python .\scripts\check_dissertation_toc_contract.py
+```
+
+This audit checks the rendered PDF for:
+
+- a live TOC section extracted from the rendered PDF rather than `.tex` tokens
+- template-sized TOC sentinels only: `ABSTRACT`, `LIST OF TABLES`,
+  `LIST OF FIGURES`, first numbered chapter, first appendix divider if
+  present, and `VITA`
+- TOC entries whose rendered page labels match the current body-page labels
+- populated list-of-tables and list-of-figures pages via their sentinel body
+  patterns
+
+Policy lives in `refs/editorial_audit/dissertation_toc_contract_policy.yml`.
+Keep this expectations surface small and template-generic; deeper manuscript-
+specific chapter/table/figure inventories belong in dissertation-local audits,
+not in the public template.
 
 ---
 

@@ -1,0 +1,66 @@
+{
+  "purpose": "Guard the template dissertation's rendered TOC sentinels against live body-page label drift while keeping the expectations surface template-small.",
+  "toc_section": {
+    "start_heading": "TABLE OF CONTENTS",
+    "stop_page_headings": [
+      "LIST OF TABLES",
+      "LIST OF FIGURES",
+      "LIST OF ABBREVIATIONS",
+      "LIST OF SYMBOLS",
+      "CHAPTER 1",
+      "REFERENCES",
+      "APPENDIX A",
+      "VITA"
+    ]
+  },
+  "entries": [
+    {
+      "name": "ABSTRACT",
+      "toc_text": "ABSTRACT",
+      "body_patterns": [
+        "^ABSTRACT"
+      ]
+    },
+    {
+      "name": "LIST OF TABLES",
+      "toc_text": "LIST OF TABLES",
+      "body_patterns": [
+        "^LIST OF TABLES",
+        "1\\.1"
+      ]
+    },
+    {
+      "name": "LIST OF FIGURES",
+      "toc_text": "LIST OF FIGURES",
+      "body_patterns": [
+        "^LIST OF FIGURES",
+        "1\\.1"
+      ]
+    },
+    {
+      "name": "Chapter 1",
+      "toc_text": "1. INTRODUCTION",
+      "body_patterns": [
+        "^CHAPTER 1",
+        "INTRODUCTION"
+      ]
+    },
+    {
+      "name": "Appendix A divider",
+      "toc_text": "A. Appendix Title",
+      "body_patterns": [
+        "^APPENDIX A",
+        "Title of Appendix A"
+      ],
+      "optional": true
+    },
+    {
+      "name": "VITA",
+      "toc_text": "VITA",
+      "body_patterns": [
+        "^VITA",
+        "Placeholder for biographical sketch"
+      ]
+    }
+  ]
+}
