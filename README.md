@@ -86,10 +86,32 @@ Use it instead of raw `/URI` grep.
 ## Submission sanity checks
 
 - FINAL build has no active URL links (per UTC).
+- Preliminary-pages audit passes with
+  `python .\scripts\check_dissertation_prelim_contract.py`.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
   `Approved:` label line.
+
+## Preliminary-pages audit
+
+Primary check:
+
+```powershell
+python .\scripts\check_dissertation_prelim_contract.py
+```
+
+This audit checks the rendered PDF for:
+
+- lower-case Roman prelim labels through the page before Chapter 1 page `1`
+- suppressed printed numeral on page `i`
+- bottom-centered prelim numerals on the remaining prelim pages
+- a configurable degree-name phrase on the title page
+- optional copyright-page presence and centered placement
+
+Policy lives in `refs/editorial_audit/dissertation_prelim_contract_policy.yml`.
+When adapting the template for a real manuscript, update the degree phrase and
+copyright-page toggle there to match the intended submission state.
 
 ---
 

@@ -64,3 +64,4 @@ jobs:
           python3 scripts/check_dissertation_hyperlinks.py
           python3 scripts/check_dissertation_fonts.py \
             --policy refs/editorial_audit/dissertation_font_policy_ci.yml
+          python3 scripts/check_dissertation_prelim_contract.py

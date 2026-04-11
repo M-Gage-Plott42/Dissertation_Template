@@ -28,6 +28,7 @@ When editing LaTeX/template behavior, also ensure:
 - Build succeeds with `latexmk -pdfxe -bibtex Dissertation_Main.tex`.
 - Final-mode hyperlink audit passes with `python .\scripts\check_dissertation_hyperlinks.py`.
 - Final-mode font audit passes with `python .\scripts\check_dissertation_fonts.py`.
+- Preliminary-pages audit passes with `python .\scripts\check_dissertation_prelim_contract.py`.
 
 ## Commit guidance
 

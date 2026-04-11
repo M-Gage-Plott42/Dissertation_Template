@@ -1,0 +1,33 @@
+{
+  "purpose": "Guard the template dissertation's rendered preliminary-page contract: Roman prelim sequence, suppressed printed i, bottom-centered prelim numerals, a configurable degree phrase on the title page, and optional copyright-page presence.",
+  "first_body_page_label": "1",
+  "suppressed_page_number_pages": [
+    1
+  ],
+  "page_number_y0_range": [
+    704.0,
+    709.5
+  ],
+  "page_number_y1_range": [
+    720.0,
+    724.5
+  ],
+  "page_number_center_tolerance": 8.0,
+  "degree_page": {
+    "physical_page": 2,
+    "required_degree_phrase": "Degree Name"
+  },
+  "copyright_page": {
+    "enabled": true,
+    "physical_page": 3,
+    "required_phrases": [
+      "Copyright ©",
+      "All Rights Reserved"
+    ],
+    "center_x_tolerance": 8.0,
+    "center_y_range": [
+      384.0,
+      389.0
+    ]
+  }
+}

@@ -93,6 +93,18 @@ python .\scripts\check_dissertation_fonts.py
 - Use Foxit/Acrobat “Document Properties → Fonts” only as a manual spot-check.
 - If fonts show Latin Modern / Computer Modern for body text, that is noncompliant and must be corrected.
 
+### Preliminary-pages audit
+Run:
+
+```powershell
+python .\scripts\check_dissertation_prelim_contract.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_prelim_contract_policy.yml`.
+- This is the primary rendered-PDF check for Roman prelim sequence, suppressed
+  printed `i`, bottom-centered prelim numerals, title-page degree phrase, and
+  optional copyright-page handling.
+
 ---
 
 ## UTC non-negotiables (high level)
@@ -154,8 +166,9 @@ Before any `git push`:
 2. Build succeeded with `latexmk`.
 3. Final-mode hyperlink audit passes.
 4. Final-mode font audit passes.
-5. No new margin problems (watch for `Overfull \hbox`).
-6. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+5. Preliminary-pages audit passes.
+6. No new margin problems (watch for `Overfull \hbox`).
+7. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.
