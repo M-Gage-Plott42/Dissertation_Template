@@ -42,6 +42,9 @@ Template-facing non-negotiables mapped from the standards:
   the generic page-geometry, structural-margin, and TOC policies so margin
   guides can be visually checked without promoting a dissertation-specific
   exact-margin lock stack into the public template baseline.
+- A separate opt-in rendered exact-margin audit may be used for second-phase
+  closeout of the shipped template families, but it is intentionally kept
+  outside the default public-template CI contract.
 - References heading/page spacing and entry spacing must follow UTC examples.
 - TOC/LoT/LoF and chapter/section heading formatting must remain UTC-compliant.
 

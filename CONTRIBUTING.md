@@ -37,6 +37,12 @@ When editing LaTeX/template behavior, also ensure:
 - Structural margin audit passes with `python .\scripts\check_dissertation_margin_structural.py`.
 - Margin proof overlay builds with `python .\scripts\build_dissertation_margin_proof_overlay.py`.
 
+Optional second-phase validation when exact rendered margin locking matters:
+
+- Exact-margin audit passes with `python .\scripts\audit_dissertation_margin_exact.py`.
+- Keep that lane out of the default baseline CI contract unless the repo policy
+  is intentionally changed.
+
 ## Commit guidance
 
 - Keep commits small and reviewable.

@@ -106,6 +106,9 @@ Use it instead of raw `/URI` grep.
   `python .\scripts\check_dissertation_margin_structural.py`.
 - Margin proof overlay builds with
   `python .\scripts\build_dissertation_margin_proof_overlay.py`.
+- Optional second-phase exact-margin audit is available with
+  `python .\scripts\audit_dissertation_margin_exact.py`, but it is not part of
+  the default public-template CI contract.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
@@ -252,6 +255,31 @@ Use it to visually confirm:
 
 This proof artifact is required in the template validation flow, but it is not
 the same as a manuscript-specific exact-margin enforcement stack.
+
+---
+
+## Exact-margin audit
+
+Opt-in second-phase check:
+
+```powershell
+python .\scripts\audit_dissertation_margin_exact.py
+```
+
+This audit checks the rendered PDF only, with policy values in inches, for:
+
+- the shipped template's exact opener-family top positions across committee,
+  title, abstract, dedication, acknowledgements, TOC, list, chapter, appendix,
+  references, and VITA pages
+- the title-page spacer family and chapter-opener internal gap family
+- the first appendix divider centering, if present
+- bottom-centered numbered-page footers under a tighter exact range than the
+  baseline structural audit
+
+Policy lives in `refs/editorial_audit/dissertation_margin_exact_policy.yml`.
+This lane is intentionally separate from the baseline template CI contract: use
+it when you want a manuscript-specific or release-closeout exact-margin pass
+after the generic compliance baseline is already green.
 
 ---
 

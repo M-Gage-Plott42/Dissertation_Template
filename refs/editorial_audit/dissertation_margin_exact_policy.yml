@@ -1,0 +1,359 @@
+{
+  "purpose": "Run a separate non-baseline rendered exact-margin audit for the shipped UTC template families in inches only. This stays out of default public-template CI and serves as a second-phase exactness surface once the generic compliance baseline is already green.",
+  "heading_top_checks": [
+    {
+      "name": "committee page title family",
+      "required_patterns": [
+        "^TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+        "\\(Chair\\)",
+        "Professor of \\[Department\\]"
+      ],
+      "phrase": "TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+      "top_range_in": [
+        2.00,
+        2.04
+      ]
+    },
+    {
+      "name": "title page title family",
+      "required_patterns": [
+        "^TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+        "Degree Name",
+        "Month Year"
+      ],
+      "phrase": "TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+      "top_range_in": [
+        2.00,
+        2.04
+      ]
+    },
+    {
+      "name": "abstract opener family",
+      "required_patterns": [
+        "^ABSTRACT",
+        "maximum word count"
+      ],
+      "phrase": "ABSTRACT",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "dedication opener family",
+      "required_patterns": [
+        "^DEDICATION",
+        "This dissertation is dedicated"
+      ],
+      "phrase": "DEDICATION",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "acknowledgements opener family",
+      "required_patterns": [
+        "^ACKNOWLEDGEMENTS",
+        "The author would like to thank"
+      ],
+      "phrase": "ACKNOWLEDGEMENTS",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "table of contents opener family",
+      "required_patterns": [
+        "^TABLE OF CONTENTS",
+        "LIST OF FIGURES"
+      ],
+      "phrase": "TABLE OF CONTENTS",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "table of contents continuation family",
+      "required_patterns": [
+        "^5\\. DISCUSSION",
+        "VITA"
+      ],
+      "phrase": "5. DISCUSSION",
+      "top_range_in": [
+        0.88,
+        0.93
+      ]
+    },
+    {
+      "name": "list of tables opener family",
+      "required_patterns": [
+        "^LIST OF TABLES",
+        "Placeholder table demonstrating"
+      ],
+      "phrase": "LIST OF TABLES",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "list of figures opener family",
+      "required_patterns": [
+        "^LIST OF FIGURES",
+        "Placeholder figure demonstrating"
+      ],
+      "phrase": "LIST OF FIGURES",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "list of abbreviations opener family",
+      "required_patterns": [
+        "^LIST OF ABBREVIATIONS",
+        "ABC, First abbreviation"
+      ],
+      "phrase": "LIST OF ABBREVIATIONS",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "list of symbols opener family",
+      "required_patterns": [
+        "^LIST OF SYMBOLS",
+        "placeholder definition for alpha"
+      ],
+      "phrase": "LIST OF SYMBOLS",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "chapter 1 opener family",
+      "required_patterns": [
+        "^CHAPTER 1",
+        "INTRODUCTION"
+      ],
+      "phrase": "CHAPTER 1",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 2 opener family",
+      "required_patterns": [
+        "^CHAPTER 2",
+        "LITERATURE REVIEW"
+      ],
+      "phrase": "CHAPTER 2",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 3 opener family",
+      "required_patterns": [
+        "^CHAPTER 3",
+        "METHODOLOGY"
+      ],
+      "phrase": "CHAPTER 3",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 4 opener family",
+      "required_patterns": [
+        "^CHAPTER 4",
+        "RESULTS"
+      ],
+      "phrase": "CHAPTER 4",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 5 opener family",
+      "required_patterns": [
+        "^CHAPTER 5",
+        "DISCUSSION"
+      ],
+      "phrase": "CHAPTER 5",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 6 opener family",
+      "required_patterns": [
+        "^CHAPTER 6",
+        "CONCLUSION"
+      ],
+      "phrase": "CHAPTER 6",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 7 opener family",
+      "required_patterns": [
+        "^CHAPTER 7",
+        "FUTURE WORK"
+      ],
+      "phrase": "CHAPTER 7",
+      "top_range_in": [
+        1.97,
+        2.01
+      ]
+    },
+    {
+      "name": "chapter 1 continuation top family",
+      "required_patterns": [
+        "^1\\.4",
+        "Subsection Placeholder"
+      ],
+      "phrase": "1.4",
+      "top_range_in": [
+        0.88,
+        0.93
+      ]
+    },
+    {
+      "name": "references opener family",
+      "required_patterns": [
+        "^REFERENCES",
+        "\\[1\\]"
+      ],
+      "phrase": "REFERENCES",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "appendix body opener family",
+      "required_patterns": [
+        "^APPENDIX A",
+        "Placeholder for Appendix A"
+      ],
+      "phrase": "APPENDIX A",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    },
+    {
+      "name": "vita opener family",
+      "required_patterns": [
+        "^VITA",
+        "Placeholder for biographical sketch"
+      ],
+      "phrase": "VITA",
+      "top_range_in": [
+        1.99,
+        2.02
+      ]
+    }
+  ],
+  "gap_checks": [
+    {
+      "name": "title page title-to-By gap",
+      "required_patterns": [
+        "^TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+        "Degree Name",
+        "Month Year"
+      ],
+      "upper_phrase": "TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+      "lower_phrase": "By",
+      "gap_range_in": [
+        1.62,
+        1.68
+      ]
+    },
+    {
+      "name": "title page author-to-body gap",
+      "required_patterns": [
+        "^TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+        "Degree Name",
+        "Month Year"
+      ],
+      "upper_phrase": "First Middle Last",
+      "lower_phrase": "A Dissertation Submitted to the Faculty of the University of",
+      "gap_range_in": [
+        1.62,
+        1.68
+      ]
+    },
+    {
+      "name": "chapter opener chapter-to-title gap",
+      "required_patterns": [
+        "^CHAPTER 1",
+        "INTRODUCTION"
+      ],
+      "upper_phrase": "CHAPTER 1",
+      "lower_phrase": "INTRODUCTION",
+      "gap_range_in": [
+        0.20,
+        0.26
+      ]
+    },
+    {
+      "name": "chapter opener title-to-first-heading gap",
+      "required_patterns": [
+        "^CHAPTER 1",
+        "INTRODUCTION",
+        "1.1 Background"
+      ],
+      "upper_phrase": "INTRODUCTION",
+      "lower_phrase": "1.1",
+      "gap_range_in": [
+        0.29,
+        0.35
+      ]
+    }
+  ],
+  "appendix_divider_checks": [
+    {
+      "name": "first appendix divider family",
+      "required_patterns": [
+        "^APPENDIX A",
+        "Title of Appendix A"
+      ],
+      "appendix_phrase": "APPENDIX A",
+      "title_phrase": "Title of Appendix A",
+      "center_x_range_in": [
+        4.22,
+        4.28
+      ],
+      "center_y_range_in": [
+        5.20,
+        5.29
+      ],
+      "optional": true
+    }
+  ],
+  "footer": {
+    "footer_band_height_in": 1.25,
+    "bottom_whitespace_range_in": [
+      0.96,
+      1.00
+    ],
+    "center_x_tolerance_in": 0.03,
+    "suppressed_page_labels": [
+      "i"
+    ]
+  }
+}

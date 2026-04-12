@@ -169,6 +169,20 @@ python .\scripts\build_dissertation_margin_proof_overlay.py
 - Treat this as required validation output for margin closeout, but do not
   confuse it with a manuscript-specific exact-margin lock stack.
 
+### Exact-margin audit
+Run:
+
+```powershell
+python .\scripts\audit_dissertation_margin_exact.py
+```
+
+- The default policy is `refs/editorial_audit/dissertation_margin_exact_policy.yml`.
+- This is a separate second-phase rendered exact-margin lane for the shipped
+  template families only.
+- Do not fold this script into default public-template CI unless the repo
+  policy is explicitly changed to make manuscript-specific exactness part of the
+  baseline contract.
+
 ---
 
 ## UTC non-negotiables (high level)

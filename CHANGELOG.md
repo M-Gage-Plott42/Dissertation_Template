@@ -7,6 +7,19 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Added
+
+- A separate rendered exact-margin audit surface for the shipped template page
+  families via `scripts/audit_dissertation_margin_exact.py` and
+  `refs/editorial_audit/dissertation_margin_exact_policy.yml`, kept out of the
+  default public-template CI contract.
+
+### Changed
+
+- README, AGENTS, CONTRIBUTING, and the standards index now distinguish the
+  baseline template compliance stack from the separate opt-in exact-margin
+  closeout lane.
+
 ## [1.1.1] - 2026-04-11
 
 ### Changed
