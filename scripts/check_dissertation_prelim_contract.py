@@ -21,6 +21,19 @@ class DegreePolicy:
 
 
 @dataclass(frozen=True)
+class TitlePagePolicy:
+    physical_page: int
+    title_phrase: str
+    by_phrase: str
+    author_phrase: str
+    next_element_phrase: str
+    title_to_by_gap_range_in: tuple[float, float]
+    author_to_next_gap_range_in: tuple[float, float]
+    gap_balance_tolerance_in: float
+    center_x_tolerance_in: float
+
+
+@dataclass(frozen=True)
 class CopyrightPolicy:
     enabled: bool
     physical_page: int
@@ -37,6 +50,7 @@ class PrelimPolicy:
     page_number_y0_range: tuple[float, float]
     page_number_y1_range: tuple[float, float]
     page_number_center_tolerance: float
+    title_page: TitlePagePolicy
     degree_page: DegreePolicy
     copyright_page: CopyrightPolicy
 
@@ -75,6 +89,7 @@ def _load_policy(path: Path) -> PrelimPolicy:
         raise SystemExit(f"Policy file is not valid JSON/YAML-1.2 JSON subset: {exc}") from exc
 
     copyright_raw = raw.get("copyright_page", {})
+    title_page_raw = raw.get("title_page", {})
     return PrelimPolicy(
         purpose=str(raw.get("purpose", "")),
         first_body_page_label=str(raw.get("first_body_page_label", "1")),
@@ -90,6 +105,23 @@ def _load_policy(path: Path) -> PrelimPolicy:
             float(raw["page_number_y1_range"][1]),
         ),
         page_number_center_tolerance=float(raw["page_number_center_tolerance"]),
+        title_page=TitlePagePolicy(
+            physical_page=int(title_page_raw.get("physical_page", 2)),
+            title_phrase=str(title_page_raw.get("title_phrase", "")),
+            by_phrase=str(title_page_raw.get("by_phrase", "")),
+            author_phrase=str(title_page_raw.get("author_phrase", "")),
+            next_element_phrase=str(title_page_raw.get("next_element_phrase", "")),
+            title_to_by_gap_range_in=(
+                float(title_page_raw.get("title_to_by_gap_range_in", [0.0, 0.0])[0]),
+                float(title_page_raw.get("title_to_by_gap_range_in", [0.0, 0.0])[1]),
+            ),
+            author_to_next_gap_range_in=(
+                float(title_page_raw.get("author_to_next_gap_range_in", [0.0, 0.0])[0]),
+                float(title_page_raw.get("author_to_next_gap_range_in", [0.0, 0.0])[1]),
+            ),
+            gap_balance_tolerance_in=float(title_page_raw.get("gap_balance_tolerance_in", 0.0)),
+            center_x_tolerance_in=float(title_page_raw.get("center_x_tolerance_in", 0.0)),
+        ),
         degree_page=DegreePolicy(
             physical_page=int(raw["degree_page"]["physical_page"]),
             required_degree_phrase=str(raw["degree_page"]["required_degree_phrase"]),
@@ -130,6 +162,16 @@ def _content_bbox_excluding_bottom(page: fitz.Page) -> fitz.Rect | None:
     x1 = max(word[2] for word in words)
     y1 = max(word[3] for word in words)
     return fitz.Rect(x0, y0, x1, y1)
+
+
+def _search_single_rect(page: fitz.Page, phrase: str) -> fitz.Rect | None:
+    rects = page.search_for(phrase)
+    if not rects:
+        return None
+    rect = fitz.Rect(rects[0])
+    for other in rects[1:]:
+        rect |= other
+    return rect
 
 
 def _first_body_physical_page(pdf: fitz.Document, first_body_label: str) -> int:
@@ -217,6 +259,70 @@ def main() -> int:
                     f"drifts from page center {center_x:.2f} by more than {policy.page_number_center_tolerance:.2f}"
                 )
 
+        title_page = pdf.load_page(policy.title_page.physical_page - 1)
+        title_page_center_x, _ = _page_center(title_page)
+        title_rect = _search_single_rect(title_page, policy.title_page.title_phrase)
+        by_rect = _search_single_rect(title_page, policy.title_page.by_phrase)
+        author_rect = _search_single_rect(title_page, policy.title_page.author_phrase)
+        next_element_rect = _search_single_rect(title_page, policy.title_page.next_element_phrase)
+
+        title_page_rects = {
+            policy.title_page.title_phrase: title_rect,
+            policy.title_page.by_phrase: by_rect,
+            policy.title_page.author_phrase: author_rect,
+            policy.title_page.next_element_phrase: next_element_rect,
+        }
+        for phrase, rect in title_page_rects.items():
+            if rect is None:
+                findings.append(
+                    f"title page is missing required phrase '{phrase}' for the rendered spacer audit"
+                )
+
+        if all(rect is not None for rect in title_page_rects.values()):
+            assert title_rect is not None
+            assert by_rect is not None
+            assert author_rect is not None
+            assert next_element_rect is not None
+
+            title_center_x = title_rect.x0 + title_rect.width / 2.0
+            by_center_x = by_rect.x0 + by_rect.width / 2.0
+            author_center_x = author_rect.x0 + author_rect.width / 2.0
+            next_element_center_x = next_element_rect.x0 + next_element_rect.width / 2.0
+
+            for name, center_x in (
+                ("title", title_center_x),
+                ("By", by_center_x),
+                ("author", author_center_x),
+                ("next element", next_element_center_x),
+            ):
+                center_drift_in = abs(center_x - title_page_center_x) / 72.0
+                if center_drift_in > policy.title_page.center_x_tolerance_in:
+                    findings.append(
+                        f"title page {name} center drift {center_drift_in:.4f} in exceeds "
+                        f"{policy.title_page.center_x_tolerance_in:.4f} in"
+                    )
+
+            title_to_by_gap_in = (by_rect.y0 - title_rect.y1) / 72.0
+            author_to_next_gap_in = (next_element_rect.y0 - author_rect.y1) / 72.0
+            low, high = policy.title_page.title_to_by_gap_range_in
+            if not (low <= title_to_by_gap_in <= high):
+                findings.append(
+                    f"title page title-to-By gap {title_to_by_gap_in:.4f} in is outside "
+                    f"{low:.4f}-{high:.4f} in"
+                )
+            low, high = policy.title_page.author_to_next_gap_range_in
+            if not (low <= author_to_next_gap_in <= high):
+                findings.append(
+                    f"title page author-to-next gap {author_to_next_gap_in:.4f} in is outside "
+                    f"{low:.4f}-{high:.4f} in"
+                )
+            gap_balance_in = abs(title_to_by_gap_in - author_to_next_gap_in)
+            if gap_balance_in > policy.title_page.gap_balance_tolerance_in:
+                findings.append(
+                    f"title page spacer family imbalance {gap_balance_in:.4f} in exceeds "
+                    f"{policy.title_page.gap_balance_tolerance_in:.4f} in"
+                )
+
         degree_page = pdf.load_page(policy.degree_page.physical_page - 1)
         degree_text = _normalize_page_text(degree_page)
         if policy.degree_page.required_degree_phrase not in degree_text:
@@ -274,7 +380,10 @@ def main() -> int:
     print(f"- PDF: {pdf_path}")
     print(f"- Policy: {args.policy.as_posix()}")
     print(f"- Purpose: {policy.purpose}")
-    print("- Checked: roman prelim labels, suppressed printed i, bottom-centered prelim numerals, degree phrase, and configured copyright-page behavior")
+    print(
+        "- Checked: roman prelim labels, suppressed printed i, bottom-centered prelim numerals, "
+        "title-page spacer family, degree phrase, and configured copyright-page behavior"
+    )
     return 0
 
 

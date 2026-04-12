@@ -7,6 +7,18 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-04-11
+
+### Changed
+
+- Retuned the template title page to the UTC sample spacer family so the
+  title-to-`By` gap and author-to-next-element gap match the rendered
+  manuscript standards example more closely while preserving the 2-inch top
+  title start.
+- Hardened the rendered preliminary-pages audit to verify the title-page
+  spacer family directly instead of relying on a looser manual-only visual
+  interpretation.
+
 ## [1.1.0] - 2026-04-11
 
 ### Added

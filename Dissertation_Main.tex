@@ -517,6 +517,9 @@
 \newcommand{\DegreeName}{Degree Name} % e.g., Doctor of Philosophy in [Field]
 \newcommand{\GradMonthYear}{Month Year} % May/August/December 20XX (no comma)
 \newcommand{\CopyrightYear}{20XX}
+\newcommand{\UTCTitlePageOuterGap}{1.5in}
+\newcommand{\UTCTitlePageDegreeGap}{0.5in}
+\newcommand{\UTCTitlePageDateGap}{0.25in}
 \title{\ManuscriptTitle}
 \author{\AuthorFullName}
 \date{\GradMonthYear}
@@ -579,17 +582,20 @@ Associate Professor of [Department] & Assistant Professor of [Department] \\
 \thispagestyle{plain}
 \begin{center}
 \ManuscriptTitle\par
-\vspace{0.75in}
+% UTC sample title page keeps the title at the 2 in opener line, but the
+% title-to-"By" and name-to-body spacer family is substantially larger than
+% the default chapter/list opener gaps.
+\vspace{\UTCTitlePageOuterGap}
 By\par
 \AuthorFullName\par
-\vspace{0.75in}
+\vspace{\UTCTitlePageOuterGap}
 \begin{singlespace}
 A Dissertation Submitted to the Faculty of the University of\\
 Tennessee at Chattanooga in Partial\\
 Fulfillment of the Requirements of the Degree\\
-of \DegreeName\\[0.5in]
+of \DegreeName\\[\UTCTitlePageDegreeGap]
 The University of Tennessee at Chattanooga\\
-Chattanooga, Tennessee\\[0.25in]
+Chattanooga, Tennessee\\[\UTCTitlePageDateGap]
 \GradMonthYear
 \end{singlespace}
 \end{center}

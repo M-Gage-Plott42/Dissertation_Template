@@ -124,6 +124,8 @@ This audit checks the rendered PDF for:
 - lower-case Roman prelim labels through the page before Chapter 1 page `1`
 - suppressed printed numeral on page `i`
 - bottom-centered prelim numerals on the remaining prelim pages
+- UTC-sample title-page spacer geometry between the title, `By`, author name,
+  and the next title-page element
 - a configurable degree-name phrase on the title page
 - optional copyright-page presence and centered placement
 

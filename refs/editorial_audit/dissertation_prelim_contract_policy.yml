@@ -13,6 +13,23 @@
     724.5
   ],
   "page_number_center_tolerance": 8.0,
+  "title_page": {
+    "physical_page": 2,
+    "title_phrase": "TITLE OF THESIS OR DISSERTATION IN ALL CAPS",
+    "by_phrase": "By",
+    "author_phrase": "First Middle Last",
+    "next_element_phrase": "A Dissertation Submitted to the Faculty of the University of",
+    "title_to_by_gap_range_in": [
+      1.58,
+      1.72
+    ],
+    "author_to_next_gap_range_in": [
+      1.58,
+      1.72
+    ],
+    "gap_balance_tolerance_in": 0.08,
+    "center_x_tolerance_in": 0.12
+  },
   "degree_page": {
     "physical_page": 2,
     "required_degree_phrase": "Degree Name"

@@ -108,8 +108,9 @@ python .\scripts\check_dissertation_prelim_contract.py
 
 - The default policy is `refs/editorial_audit/dissertation_prelim_contract_policy.yml`.
 - This is the primary rendered-PDF check for Roman prelim sequence, suppressed
-  printed `i`, bottom-centered prelim numerals, title-page degree phrase, and
-  optional copyright-page handling.
+  printed `i`, bottom-centered prelim numerals, the UTC-sample title-page
+  spacer family, title-page degree phrase, and optional copyright-page
+  handling.
 
 ### Abstract-cap audit
 Run:
