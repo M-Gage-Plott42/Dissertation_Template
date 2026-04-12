@@ -33,7 +33,8 @@ When updating the standards PDF, update all three files in the same commit.
 - **MiKTeX** (with XeLaTeX)
 - **Perl** (required for `latexmk` in MiKTeX on Windows)
 - `latexmk` available on PATH (MiKTeX installs it)
-- **Python 3** with `PyMuPDF` available for the rendered-PDF audit scripts
+- **Python 3** with the pinned audit dependency set from
+  `requirements-audits.txt`
 - Optional: a PDF viewer that can inspect fonts (Foxit/Adobe)
 
 ---
@@ -57,6 +58,12 @@ latexmk -c
 
 # Force a full rebuild if something gets "stuck"
 latexmk -pdfxe -bibtex -f Dissertation_Main.tex
+```
+
+Install the rendered-PDF audit dependency set with:
+
+```powershell
+python -m pip install -r requirements-audits.txt
 ```
 
 ---

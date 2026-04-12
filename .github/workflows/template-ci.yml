@@ -30,7 +30,7 @@ jobs:
             texlive-fonts-recommended \
             texlive-latex-extra \
             texlive-xetex
-          python3 -m pip install --break-system-packages PyMuPDF
+          python3 -m pip install --break-system-packages -r requirements-audits.txt
 
       - name: Prepare CI build copy
         run: |

@@ -25,6 +25,8 @@ When editing workflows/docs/repo metadata, ensure:
 
 When editing LaTeX/template behavior, also ensure:
 
+- The pinned audit dependency set is installed with
+  `python -m pip install -r requirements-audits.txt`.
 - Build succeeds with `latexmk -pdfxe -bibtex Dissertation_Main.tex`.
 - Final-mode hyperlink audit passes with `python .\scripts\check_dissertation_hyperlinks.py`.
 - Final-mode font audit passes with `python .\scripts\check_dissertation_fonts.py`.

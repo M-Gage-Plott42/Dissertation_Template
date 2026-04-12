@@ -59,6 +59,12 @@ latexmk -pdfxe -bibtex Dissertation_Main.tex
 
 (Uses XeLaTeX; required for system fonts like Times New Roman / Calibri.)
 
+Install the pinned rendered-PDF audit dependencies with:
+
+```powershell
+python -m pip install -r requirements-audits.txt
+```
+
 ### Always check the log for problems
 After building, scan `Dissertation_Main.log` for:
 
