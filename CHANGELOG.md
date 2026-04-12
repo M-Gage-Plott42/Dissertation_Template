@@ -13,12 +13,17 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
   families via `scripts/audit_dissertation_margin_exact.py` and
   `refs/editorial_audit/dissertation_margin_exact_policy.yml`, kept out of the
   default public-template CI contract.
+- GitHub dependency review for pull requests and merge-queue checks via
+  `.github/workflows/dependency-review.yml` and
+  `.github/dependency-review-config.yml`.
 
 ### Changed
 
 - README, AGENTS, CONTRIBUTING, and the standards index now distinguish the
   baseline template compliance stack from the separate opt-in exact-margin
   closeout lane.
+- Existing GitHub Actions workflows now use workflow-level concurrency and
+  `merge_group` triggers so required checks remain reusable in merge queues.
 
 ## [1.1.1] - 2026-04-11
 

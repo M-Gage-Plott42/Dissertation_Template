@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/github/license/M-Gage-Plott42/Dissertation_Template?label=License)](LICENSE)
 [![Template CI](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/template-ci.yml)
 [![Markdown Lint](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/markdown-lint.yml)
+[![Dependency Review](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/M-Gage-Plott42/Dissertation_Template/actions/workflows/dependency-review.yml)
 [![Release](https://img.shields.io/github/v/release/M-Gage-Plott42/Dissertation_Template?label=Release)](https://github.com/M-Gage-Plott42/Dissertation_Template/releases)
 
 LaTeX dissertation project aligned to **The University of Tennessee at
@@ -382,6 +383,15 @@ This repository is licensed under the MIT License. See `LICENSE`.
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
+
+## GitHub automation
+
+- Existing CI and Markdown lint workflows now use workflow-level concurrency and
+  `merge_group` triggers so required checks stay stable on PRs and merge queues.
+- Dependency review runs by default on public repos with
+  `.github/workflows/dependency-review.yml`.
+- Private copies can enable the same dependency review lane after GitHub Code
+  Security or GHAS is available by setting `ENABLE_DEPENDENCY_REVIEW=true`.
 
 ## Notes
 
