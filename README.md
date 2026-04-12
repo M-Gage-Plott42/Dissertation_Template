@@ -33,6 +33,7 @@ When updating the standards PDF, update all three files in the same commit.
 - **MiKTeX** (with XeLaTeX)
 - **Perl** (required for `latexmk` in MiKTeX on Windows)
 - `latexmk` available on PATH (MiKTeX installs it)
+- **Python 3** with `PyMuPDF` available for the rendered-PDF audit scripts
 - Optional: a PDF viewer that can inspect fonts (Foxit/Adobe)
 
 ---
@@ -96,6 +97,8 @@ Use it instead of raw `/URI` grep.
   `python .\scripts\check_dissertation_page_geometry.py`.
 - Structural margin audit passes with
   `python .\scripts\check_dissertation_margin_structural.py`.
+- Margin proof overlay builds with
+  `python .\scripts\build_dissertation_margin_proof_overlay.py`.
 - TOC page numbers match the actual page numbers in the PDF.
 - Appendix entries in the TOC list divider page numbers.
 - Committee/approval page starts with the title at the 2" top margin; no
@@ -190,7 +193,8 @@ This audit checks the rendered PDF only, with policy values in inches, for:
 
 Policy lives in `refs/editorial_audit/dissertation_page_geometry_policy.yml`.
 Keep this lane limited to generic page-family sentinels; the broader structural
-margin audit and optional overlay tooling belong to the next tier.
+margin audit and the generated proof overlay consume the same generic policy
+family without pulling in manuscript-specific exact-margin locks.
 
 ---
 
@@ -211,8 +215,34 @@ This audit checks the rendered PDF only for:
 - no footer-band text beyond the printed page number
 
 Policy lives in `refs/editorial_audit/dissertation_margin_structural_policy.yml`.
-This is the broader reusable margin/body-box lane; optional overlay proofing and
-heavier rendered exact-margin stacks stay out of the first template port.
+This is the broader reusable margin/body-box lane. The template now also
+requires a generated proof overlay for human-verifiable guide pages, while the
+heavier manuscript-specific rendered exact-margin stack stays out of the
+default public-template contract.
+
+---
+
+## Margin proof overlay
+
+Primary check:
+
+```powershell
+python .\scripts\build_dissertation_margin_proof_overlay.py
+```
+
+This generator consumes the page-geometry, structural-margin, and TOC policies
+and writes an ignored local proof PDF named
+`dissertation_margin_proof_overlay_current.pdf`.
+
+Use it to visually confirm:
+
+- 1-inch body margins and 1-inch bottom page-number family guides
+- 2-inch opener guides on committee/title/abstract/chapter/reference families
+- centered appendix-divider family positioning, if present
+- TOC-family pages under the same rendered guide surface
+
+This proof artifact is required in the template validation flow, but it is not
+the same as a manuscript-specific exact-margin enforcement stack.
 
 ---
 

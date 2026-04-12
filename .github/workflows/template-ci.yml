@@ -53,7 +53,7 @@ jobs:
           ! rg -n -F "Overfull \\\\hbox" Dissertation_Main.log
           ! rg -n -F "Underfull \\\\hbox" Dissertation_Main.log
 
-      - name: Build (final mode) and audit active links
+      - name: Build (final mode) and audit rendered PDF
         run: |
           cd /tmp/template-ci
           rg -n "\\\\UTCFinalfalse" Dissertation_Main.tex
@@ -69,3 +69,6 @@ jobs:
           python3 scripts/check_dissertation_toc_contract.py
           python3 scripts/check_dissertation_page_geometry.py
           python3 scripts/check_dissertation_margin_structural.py
+          python3 scripts/build_dissertation_margin_proof_overlay.py \
+            --out dissertation_margin_proof_overlay_current.pdf
+          test -s dissertation_margin_proof_overlay_current.pdf

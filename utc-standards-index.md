@@ -38,6 +38,10 @@ Template-facing non-negotiables mapped from the standards:
   sentinels: rendered text should stay inside the 1-inch left/right body box,
   numbered pages should keep clean footer bands, and running headers/footers
   are not permitted.
+- The template validation workflow also generates a rendered proof overlay from
+  the generic page-geometry, structural-margin, and TOC policies so margin
+  guides can be visually checked without promoting a dissertation-specific
+  exact-margin lock stack into the public template baseline.
 - References heading/page spacing and entry spacing must follow UTC examples.
 - TOC/LoT/LoF and chapter/section heading formatting must remain UTC-compliant.
 

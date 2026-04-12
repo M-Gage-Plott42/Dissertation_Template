@@ -33,6 +33,7 @@ When editing LaTeX/template behavior, also ensure:
 - TOC sentinel audit passes with `python .\scripts\check_dissertation_toc_contract.py`.
 - Page-geometry sentinel audit passes with `python .\scripts\check_dissertation_page_geometry.py`.
 - Structural margin audit passes with `python .\scripts\check_dissertation_margin_structural.py`.
+- Margin proof overlay builds with `python .\scripts\build_dissertation_margin_proof_overlay.py`.
 
 ## Commit guidance
 

@@ -149,6 +149,19 @@ python .\scripts\check_dissertation_margin_structural.py
 - This is the broader rendered-PDF check for reusable body-box bounds, footer/page-number
   placement, and no-running-header/footer invariants.
 
+### Margin proof overlay
+Run:
+
+```powershell
+python .\scripts\build_dissertation_margin_proof_overlay.py
+```
+
+- The default output is `dissertation_margin_proof_overlay_current.pdf`.
+- The generator consumes the existing page-geometry, structural-margin, and TOC
+  policies to build human-verifiable rendered proof pages.
+- Treat this as required validation output for margin closeout, but do not
+  confuse it with a manuscript-specific exact-margin lock stack.
+
 ---
 
 ## UTC non-negotiables (high level)
@@ -177,6 +190,8 @@ The agent must preserve/implement these behaviors:
 - **Structural margins**: rendered text must remain inside the 1-inch left/right
   body box, numbered pages must keep clean footer bands, and running
   headers/footers are not permitted.
+- **Margin proof artifact**: build the rendered proof overlay from the shared
+  generic policies whenever margin validation is part of the turn.
 - **REFERENCES**: entries single-spaced; gap between entries equals the double-spaced baseline (`\bibitemsep=\UTCdblskip-\baselineskip` after `\singlespacing` with `\itemsep` set); no debug `\typeout`.
 
 If any change risks breaking these rules, the agent should stop and surface the risk to the user instead of making a “best guess” silent change.
@@ -226,8 +241,9 @@ Before any `git push`:
 7. TOC sentinel audit passes.
 8. Page-geometry sentinel audit passes.
 9. Structural margin audit passes.
-10. No new margin problems (watch for `Overfull \hbox`).
-11. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
+10. Margin proof overlay builds successfully.
+11. No new margin problems (watch for `Overfull \hbox`).
+12. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
 
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.
