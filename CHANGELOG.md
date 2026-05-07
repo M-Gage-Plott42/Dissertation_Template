@@ -9,6 +9,28 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ### Added
 
+- A public license-scope notice clarifying that the tracked UTC Graduate
+  Manuscript Standards PDF remains an official UTC document and is not
+  relicensed by this repository.
+
+### Changed
+
+- Generalized AGENTS timeline guidance so the public template no longer refers
+  to a private-project defense date.
+- Expanded Markdown lint coverage to all public repository documentation
+  surfaces.
+
+### Repository
+
+- Mark the GitHub repository as a template repository for the public reuse
+  workflow.
+- Require dependency review alongside template and Markdown checks in the
+  protected default-branch ruleset.
+
+## [1.1.2] - 2026-04-12
+
+### Added
+
 - A separate rendered exact-margin audit surface for the shipped template page
   families via `scripts/audit_dissertation_margin_exact.py` and
   `refs/editorial_audit/dissertation_margin_exact_policy.yml`, kept out of the

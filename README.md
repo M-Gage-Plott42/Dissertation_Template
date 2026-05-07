@@ -29,6 +29,16 @@ When updating the standards PDF, update all three files in the same commit.
 
 ---
 
+## License scope
+
+The MIT License applies to this repository's original template source, scripts,
+documentation, and workflow files. The tracked UTC Graduate Manuscript Standards
+PDF is included only as an official formatting reference/provenance artifact;
+it remains a University of Tennessee at Chattanooga document and is not
+relicensed by this repository.
+
+---
+
 ## Requirements (Windows)
 
 - **MiKTeX** (with XeLaTeX)
