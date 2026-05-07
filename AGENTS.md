@@ -51,6 +51,7 @@ near the top of `Dissertation_Main.tex` (comment it back out for full builds).
 ## Build + verify (required after any formatting change)
 
 ### Build command (Windows, PowerShell)
+
 Run from repo root:
 
 ```powershell
@@ -66,6 +67,7 @@ python -m pip install -r requirements-audits.txt
 ```
 
 ### Always check the log for problems
+
 After building, scan `Dissertation_Main.log` for:
 
 - `LaTeX Error`
@@ -74,6 +76,7 @@ After building, scan `Dissertation_Main.log` for:
 - `Underfull \hbox` (usually minor, but still review)
 
 ### Hyperlink audit (final mode)
+
 For **final submission PDFs**, use the rendered-PDF hyperlink audit script as
 the primary check.
 
@@ -87,6 +90,7 @@ python .\scripts\check_dissertation_hyperlinks.py
 - If it fails, the PDF is **not** acceptable for final submission.
 
 ### Font audit (final mode)
+
 UTC requires **Times New Roman or Calibri (11 or 12 pt)** throughout the document text.
 
 - Run:
@@ -100,6 +104,7 @@ python .\scripts\check_dissertation_fonts.py
 - If fonts show Latin Modern / Computer Modern for body text, that is noncompliant and must be corrected.
 
 ### Preliminary-pages audit
+
 Run:
 
 ```powershell
@@ -113,6 +118,7 @@ python .\scripts\check_dissertation_prelim_contract.py
   handling.
 
 ### Abstract-cap audit
+
 Run:
 
 ```powershell
@@ -124,6 +130,7 @@ python .\scripts\check_dissertation_abstract_cap.py
   extraction and UTC's dissertation abstract cap.
 
 ### TOC sentinel audit
+
 Run:
 
 ```powershell
@@ -135,6 +142,7 @@ python .\scripts\check_dissertation_toc_contract.py
   rendered page labels must match the current body pages.
 
 ### Page-geometry sentinel audit
+
 Run:
 
 ```powershell
@@ -146,6 +154,7 @@ python .\scripts\check_dissertation_page_geometry.py
   geometry sentinels before opening the heavier structural/rendered margin stack.
 
 ### Structural margin audit
+
 Run:
 
 ```powershell
@@ -157,6 +166,7 @@ python .\scripts\check_dissertation_margin_structural.py
   placement, and no-running-header/footer invariants.
 
 ### Margin proof overlay
+
 Run:
 
 ```powershell
@@ -170,6 +180,7 @@ python .\scripts\build_dissertation_margin_proof_overlay.py
   confuse it with a manuscript-specific exact-margin lock stack.
 
 ### Exact-margin audit
+
 Run:
 
 ```powershell
@@ -222,6 +233,7 @@ If any change risks breaking these rules, the agent should stop and surface the 
 ## Git workflow rules
 
 ### Branching
+
 - Never do large formatting work directly on the default branch (`main`).
 - Use a short-lived feature branch per fix, e.g.:
   - `pagination-fixes`
@@ -229,13 +241,16 @@ If any change risks breaking these rules, the agent should stop and surface the 
   - `chapter-heading-spacing`
 
 ### Commits
+
 - Prefer **small commits** with specific messages, e.g.:
   - `format: fix references TOC page number`
   - `format: enforce 2-inch top spacing on chapter pages`
   - `docs: add AGENTS + README`
 
 ### Do not commit build artifacts
+
 Unless the user explicitly requests otherwise, do **not** commit:
+
 - `*.aux *.bbl *.blg *.lof *.lot *.toc *.out *.xdv *.fdb_latexmk *.fls *.synctex.gz *.log`
 - PDFs are optional; treat as *release artifacts*, not source, **except** the canonical tracked standards PDF (`graduate-manuscript-standards-nov-2024.pdf`).
 
@@ -245,14 +260,20 @@ If build artifacts are currently being committed, recommend adding/updating `.gi
 
 ## Scope & sequencing (timeline awareness)
 
-- **Before defense (Feb 27)**: prioritize **structural/pagination** and **hard compliance** items that would be disruptive later (page numbering, ToC/LoF/LoT correctness, heading spacing rules, margin safety).
-- **After defense**: polish/cleanup items (minor spacing cosmetics, optional refinements, stylistic improvements).
+- **Before the defense or submission deadline**: prioritize
+  **structural/pagination** and **hard compliance** items that would be
+  disruptive later, such as page numbering, ToC/LoF/LoT correctness, heading
+  spacing rules, and margin safety.
+- **After the defense or after the hard formatting deadline**: handle
+  polish/cleanup items such as minor spacing cosmetics, optional refinements,
+  and stylistic improvements.
 
 ---
 
 ## Safety checks before pushing
 
 Before any `git push`:
+
 1. `git status` is clean (only intended files staged).
 2. Build succeeded with `latexmk`.
 3. Final-mode hyperlink audit passes.
@@ -265,6 +286,5 @@ Before any `git push`:
 10. Margin proof overlay builds successfully.
 11. No new margin problems (watch for `Overfull \hbox`).
 12. GitHub Actions checks are passing (`Template CI`, `Markdown Lint`) when workflows are touched.
-
 
 When any template rule changes, update AGENTS.md in the same PR/commit so the agent instructions don't drift.
